@@ -1,0 +1,16 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+:root{
+  --primary-color: #252B6D;
+  --secondary-color: #EF7422;
+  --terciary-color: #EFBF54;
+  --quaternary-color: #EEFEFF;
+  --highlight-bg: #EF7422;
+
+}
+
+

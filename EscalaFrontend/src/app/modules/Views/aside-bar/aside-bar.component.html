@@ -1,0 +1,10 @@
+<div>
+  <button (click)="toggle()"> ? </button>
+  <aside class="aside" [ngClass]="opened ? 'opened': ''">
+    <button (click)="toggle()"> ? </button>
+    <ul>
+      <li>filter 1</li>
+      <li>filter 2</li>
+    </ul>
+  </aside>
+</div>

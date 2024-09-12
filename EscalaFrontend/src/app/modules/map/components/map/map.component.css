@@ -1,0 +1,6 @@
+#map{
+  height: 98vh;
+
+  position: relative;
+  z-index: 1;
+}
