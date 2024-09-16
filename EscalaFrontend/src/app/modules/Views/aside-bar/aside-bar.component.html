@@ -1,7 +1,8 @@
 <div>
-  <button (click)="toggle()"> ? </button>
+  <app-buttontab  (outputToggle)="toggle($event)"></app-buttontab>
+
   <aside class="aside" [ngClass]="opened ? 'opened': ''">
-    <button (click)="toggle()"> ? </button>
+
     <ul>
       <li>filter 1</li>
       <li>filter 2</li>

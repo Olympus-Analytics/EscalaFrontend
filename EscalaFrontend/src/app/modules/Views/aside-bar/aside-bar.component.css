@@ -5,7 +5,7 @@
   height: 100vh;
   background-color: var(--terciary-color);
   width: 18rem;
-  z-index: 120;
+  z-index: 80;
   display: flex;
   padding-top: 5rem;
   flex-direction: column;
