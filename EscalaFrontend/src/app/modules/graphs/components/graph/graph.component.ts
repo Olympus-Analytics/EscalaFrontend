@@ -89,7 +89,7 @@ export class GraphComponent implements OnInit {
     );
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
     this.updateGraph()
-    this.typeSelected = this.types[0];
+    this.typeSelected = this.types?[0] : "bart";
     this.basicOptions = {
       plugins: {
         legend: {
