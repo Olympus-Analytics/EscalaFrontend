@@ -1,3 +1,29 @@
-<div class="card w-[36rem] shadow-2xl rounded-2xl ">
-  <p-chart type="bar" [data]="basicData" [options]="basicOptions" />
+<div
+  class="card w-[36rem] shadow-2xl rounded-2xl flex flex-col px-12 py-8 gap-6"
+>
+  <p-chart [type]="typeSelected" [data]="data" [options]="basicOptions" />
+  <div class="flex flex-row justify-between">
+    <mat-form-field>
+      <mat-label>Selecciona un filtro</mat-label>
+      <mat-select
+        [(value)]="selected"
+        (selectionChange)="onSelectionChange($event.value)"
+      >
+        @for (item of graphsTypes; track item.code) {
+          <mat-option [value]="item.code">{{ item.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Selecciona un tipo de gráfica</mat-label>
+      <mat-select
+        [(value)]="typeSelected"
+        (selectionChange)="onSelectionChangeType($event.value)"
+      >
+        @for (item of types; track item) {
+          <mat-option [value]="item">{{ item }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
 </div>

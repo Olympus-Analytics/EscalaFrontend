@@ -1,49 +1,95 @@
-import { Component, input, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { Graph, GraphsType } from '../../../../models/graph.model';
+import { DataService } from '../../../../services/data.service';
 
 @Component({
   selector: 'app-graph',
   standalone: true,
-  imports: [ChartModule],
+  imports: [ChartModule, MatFormFieldModule, MatSelectModule],
   templateUrl: './graph.component.html',
   styleUrl: './graph.component.css',
 })
 export class GraphComponent implements OnInit {
-  data = input<JSON>();
-  basicData: any;
+  dataService = inject(DataService);
+  graphsTypes = [
+    {
+      name: 'Traffic Collisions Object',
+      code: GraphsType.traffic_collisions_object,
+    },
+    {
+      name: 'Traffic Collisions Object Type',
+      code: GraphsType.traffic_collisions_object_type,
+    },
+    {
+      name: 'Traffic Collisions Area',
+      code: GraphsType.traffic_collisions_area,
+    },
+    {
+      name: 'Traffic Collisions Zone',
+      code: GraphsType.traffic_collisions_zone,
+    },
+    {
+      name: 'Traffic Collisions Victims Year',
+      code: GraphsType.traffic_collisions_victims_year,
+    },
+    {
+      name: 'Traffic Collisions Victims Month',
+      code: GraphsType.traffic_collisions_victims_month,
+    },
+    {
+      name: 'Traffic Collisions Road',
+      code: GraphsType.traffic_collisions_road,
+    },
+    {
+      name: 'Traffic Collisions Severity',
+      code: GraphsType.traffic_collisions_severity,
+    },
+  ];
+
+  selected = this.graphsTypes[0].code;
+  types: string[];
+  typeSelected:any;
+  data: any;
 
   basicOptions: any;
+  onSelectionChange(seletedValue: GraphsType) {
+    this.selected = seletedValue;
+
+    this.updateGraph()
+
+    console.log(this.selected);
+  }
+  onSelectionChangeType(seletedValue: any) {
+    this.typeSelected = seletedValue;
+    this.updateGraph()
+
+  }
+  updateGraph(){
+    this.dataService.getRaster(this.selected).subscribe((data) => {
+      console.log(data.datasets);
+
+      this.data = {
+        labels: data.labels,
+        datasets: [data.datasets],
+      };
+      this.types = data.chart;
+      this.typeSelected = this.typeSelected === undefined || !this.types.includes(this.typeSelected) ? this.types[0] : this.typeSelected;
+    });
+
+  }
+
   ngOnInit() {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
     const textColorSecondary = documentStyle.getPropertyValue(
-      '--text-color-secondary'
+      '--text-color-secondary',
     );
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-
-    this.basicData = {
-      labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-      datasets: [
-        {
-          label: 'Sales',
-          data: [540, 325, 702, 620],
-          backgroundColor: [
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-          ],
-          borderColor: [
-            'rgb(255, 159, 64)',
-            'rgb(75, 192, 192)',
-            'rgb(54, 162, 235)',
-            'rgb(153, 102, 255)',
-          ],
-          borderWidth: 1,
-        },
-      ],
-    };
-
+    this.updateGraph()
+    this.typeSelected = this.types[0];
     this.basicOptions = {
       plugins: {
         legend: {
