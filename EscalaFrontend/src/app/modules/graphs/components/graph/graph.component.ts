@@ -50,7 +50,7 @@ export class GraphComponent implements OnInit {
   ];
 
   selected = this.graphsTypes[0].code;
-  types: string[];
+  types: string[] | undefined;
   typeSelected:any;
   data: any;
 
