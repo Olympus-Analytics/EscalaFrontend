@@ -23,4 +23,9 @@ export enum GraphsType {
 }
 
 
+export enum RasterFilter {
+  ndvi = "ndvi"
+}
+
+
 

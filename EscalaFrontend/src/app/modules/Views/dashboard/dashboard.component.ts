@@ -1,4 +1,4 @@
-import { Component, input ,HostBinding } from '@angular/core';
+import { Component, input, HostBinding, inject } from '@angular/core';
 
 import { GraphComponent } from '../../graphs/components/graph/graph.component';
 
@@ -12,6 +12,7 @@ import {
 } from '@angular/animations';
 
 import { NgClass } from '@angular/common';
+import { DashboardService } from './service/dashboard.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -28,8 +29,8 @@ import { NgClass } from '@angular/common';
 export class DashboardComponent {
 
   data = input<JSON>()
-  quantity = 1;
+  dashboardService = inject(DashboardService)
 
-  addQuantity = () => { if (this.quantity < 4) this.quantity++ }
-  removeQuantity = () => { if(this.quantity>1) this.quantity-- }
+
+
 }

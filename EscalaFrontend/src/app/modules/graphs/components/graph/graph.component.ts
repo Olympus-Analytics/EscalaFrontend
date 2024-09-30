@@ -68,7 +68,7 @@ export class GraphComponent implements OnInit {
 
   }
   updateGraph(){
-    this.dataService.getRaster(this.selected).subscribe((data) => {
+    this.dataService.getGraph(this.selected).subscribe((data) => {
       console.log(data.datasets);
 
       this.data = {
@@ -80,7 +80,7 @@ export class GraphComponent implements OnInit {
     });
 
   }
- 
+
   ngOnInit() {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
