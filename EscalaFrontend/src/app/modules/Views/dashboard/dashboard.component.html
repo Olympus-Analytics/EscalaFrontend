@@ -1,7 +1,28 @@
-<section class="p-14 flex flex-col justify-center w-full gap-24">
-  <h1 class=" text-center text-2xl font-bold">Dashboard</h1>
-  <div class=" flex w-full justify-around">
-    <app-graph></app-graph>
+<section class="p-14 flex flex-col justify-center items-center w-full gap-24">
+  <h1 class="text-center text-2xl font-bold">Dashboard</h1>
+  <div
+    class="dashboard-container"
+    [ngClass]="{
+      'grid-1': quantity === 1,
+      'grid-2': quantity === 2,
+      'grid-3': quantity === 3,
+      'grid-4': quantity >= 4,
+    }"
+  >
+    <app-graph @dashboard></app-graph>
+    @if (quantity > 1) {
+      <app-graph @dashboard></app-graph>
+    }
+    @if (quantity > 2) {
+      <app-graph @dashboard></app-graph>
+    }
+    @if (quantity > 3) {
+      <app-graph @dashboard></app-graph>
+    }
   </div>
+  <div class=" flex justify-between w-48" >
 
+    <button (click)="removeQuantity()">-</button>
+    <button (click)="addQuantity()">+</button>
+  </div>
 </section>
