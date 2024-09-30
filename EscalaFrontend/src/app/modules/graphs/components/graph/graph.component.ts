@@ -80,7 +80,7 @@ export class GraphComponent implements OnInit {
     });
 
   }
-
+ 
   ngOnInit() {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
