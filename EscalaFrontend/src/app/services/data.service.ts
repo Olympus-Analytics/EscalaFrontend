@@ -1,4 +1,4 @@
-import { GraphsType } from '../models/graph.model';
+import { GraphsType, RasterFilter } from '../models/graph.model';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
@@ -24,6 +24,8 @@ export class DataService {
     "traffic_collisions_road": "/traffic_collisions_road/",
     "traffic_collisions_severity": "/traffic_collisions_severity/",
   }
+  endPointsRaster = {
+    "ndvi": "/ndvi/",
 
   constructor() {}
 
