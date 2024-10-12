@@ -24,8 +24,6 @@ export class DataService {
     "traffic_collisions_road": "/traffic_collisions_road/",
     "traffic_collisions_severity": "/traffic_collisions_severity/",
   }
-  endPointsRaster = {
-    "ndvi": "/ndvi/",
 
   constructor() {}
 
