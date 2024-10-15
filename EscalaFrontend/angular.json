@@ -13,9 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "allowedCommonJsDependencies": [
-              "georaster-layer-for-leaflet"
-            ],
+            "allowedCommonJsDependencies": ["georaster-layer-for-leaflet"],
             "outputPath": "dist/escala-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -79,6 +77,9 @@
             },
             "development": {
               "buildTarget": "EscalaFrontend:build:development"
+            },
+            "options": {
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
