@@ -30,18 +30,4 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
- 
-  private async updateGeoTIFFLayer() {
-
-  }
-
-
-
-  private addMarkers() {
-
-  }
-
-  private centerMap() {
-
-  }
 }
