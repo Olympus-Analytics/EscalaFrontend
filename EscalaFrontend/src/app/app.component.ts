@@ -1,4 +1,4 @@
-import { GeoRaster } from './../../node_modules/georaster-layer-for-leaflet/dist/types/index.d';
+
 import { Component } from '@angular/core';
 import { MainComponent } from './modules/Views/main/main.component';
 import { BrowserModule } from '@angular/platform-browser';
