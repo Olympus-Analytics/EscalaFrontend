@@ -20,6 +20,7 @@
     "@angular/platform-browser": "^18.1.0",
     "@angular/platform-browser-dynamic": "^18.1.0",
     "@angular/router": "^18.1.0",
+    "@arcgis/core": "^4.30.9",
     "@arcgis/map-components-angular": "^4.30.7",
     "@midudev/tailwind-animations": "^0.1.0",
     "@tanstack/angular-query-experimental": "^5.56.2",
