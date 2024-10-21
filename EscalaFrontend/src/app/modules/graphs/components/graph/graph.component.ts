@@ -1,8 +1,8 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Graph, GraphsType } from '../../../../models/graph.model';
+import { Graph } from '../../../../models/graph.model';
 import { DataService } from '../../../../services/data.service';
 
 @Component({
@@ -10,86 +10,75 @@ import { DataService } from '../../../../services/data.service';
   standalone: true,
   imports: [ChartModule, MatFormFieldModule, MatSelectModule],
   templateUrl: './graph.component.html',
-  styleUrl: './graph.component.css',
+  styleUrls: ['./graph.component.css'],  // Asegúrate de que es "styleUrls" en plural
 })
 export class GraphComponent implements OnInit {
   dataService = inject(DataService);
-  graphsTypes = [
-    {
-      name: 'Traffic Collisions Object',
-      code: GraphsType.traffic_collisions_object,
-    },
-    {
-      name: 'Traffic Collisions Object Type',
-      code: GraphsType.traffic_collisions_object_type,
-    },
-    {
-      name: 'Traffic Collisions Area',
-      code: GraphsType.traffic_collisions_area,
-    },
-    {
-      name: 'Traffic Collisions Zone',
-      code: GraphsType.traffic_collisions_zone,
-    },
-    {
-      name: 'Traffic Collisions Victims Year',
-      code: GraphsType.traffic_collisions_victims_year,
-    },
-    {
-      name: 'Traffic Collisions Victims Month',
-      code: GraphsType.traffic_collisions_victims_month,
-    },
-    {
-      name: 'Traffic Collisions Road',
-      code: GraphsType.traffic_collisions_road,
-    },
-    {
-      name: 'Traffic Collisions Severity',
-      code: GraphsType.traffic_collisions_severity,
-    },
+
+  // Nuevos endpoints disponibles para seleccionar
+  endpoints = [
+    { name: 'Traffic Collisions', value: '/traffic_collisions/' },
+    { name: 'Traffic Collisions Count', value: '/traffic_collisions_count/' },
+    { name: 'Traffic Collisions Point', value: '/traffic_collisions_point/' },
   ];
 
-  selected = this.graphsTypes[0].code;
+  // Tipos de gráficos relacionados con los endpoints
+  graphsTypes = [
+    { name: 'Traffic Collisions Object', code: 'object' },
+    { name: 'Traffic Collisions Object Type', code: 'object_type' },
+    { name: 'Traffic Collisions Area', code: 'area' },
+    { name: 'Traffic Collisions Zone', code: 'zone' },
+    { name: 'Traffic Collisions Victims Year', code: 'years' },
+    { name: 'Traffic Collisions Victims Month', code: 'months' },
+    { name: 'Traffic Collisions Road', code: 'neighborhood' },
+    { name: 'Traffic Collisions Severity', code: 'severity' },
+  ];
+
+  selectedEndpoint = this.endpoints[0].value;  // El endpoint seleccionado inicialmente
+  selectedGraphType = this.graphsTypes[0].code;  // El filtro seleccionado inicialmente
   types: string[] | undefined;
-  typeSelected:any;
+  typeSelected: any;
   data: any;
-
   basicOptions: any;
-  onSelectionChange(seletedValue: GraphsType) {
-    this.selected = seletedValue;
 
-    this.updateGraph()
-
-    console.log(this.selected);
+  // Cuando el usuario cambia el endpoint seleccionado
+  onEndpointChange(selectedValue: string) {
+    this.selectedEndpoint = selectedValue;
+    this.updateGraph();  // Actualiza el gráfico con el nuevo endpoint
   }
+
+  // Cuando el usuario cambia el filtro del gráfico
+  onSelectionChange(seletedValue: string) {
+    this.selectedGraphType = seletedValue;
+    this.updateGraph();
+  }
+
+  // Cuando el usuario cambia el tipo de gráfico
   onSelectionChangeType(seletedValue: any) {
     this.typeSelected = seletedValue;
-    this.updateGraph()
-
+    this.updateGraph();
   }
-  updateGraph(){
-    this.dataService.getGraph(this.selected).subscribe((data) => {
-      console.log(data.datasets);
 
+  // Actualizar el gráfico en función del endpoint y el filtro seleccionados
+  updateGraph() {
+    this.dataService.getGraphData(this.selectedEndpoint,this.selectedGraphType, ).subscribe((data) => {
       this.data = {
         labels: data.labels,
         datasets: [data.datasets],
       };
       this.types = data.chart;
-      this.typeSelected = this.typeSelected === undefined || !this.types.includes(this.typeSelected) ? this.types[0] : this.typeSelected;
-    });
 
+    });
   }
 
   ngOnInit() {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
-    const textColorSecondary = documentStyle.getPropertyValue(
-      '--text-color-secondary',
-    );
+    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-    this.updateGraph()
-    this.typeSelected = this.types?[0] : "bart";
+
+    this.updateGraph();
+
     this.basicOptions = {
       plugins: {
         legend: {
