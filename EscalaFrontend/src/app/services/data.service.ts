@@ -13,7 +13,7 @@ export class DataService {
 
   http = inject(HttpClient);
 
-  // Definir los tipos de los filtros y las claves del objeto graphFilters
+
   private graphFilters: { [key: string]: string[] } = {
     traffic_collisions: ['years', 'months', 'days', 'hours', 'municipality', 'locality', 'neighborhood', 'zone', 'area', 'severity', 'type', 'object', 'object_type'],
     traffic_collisions_count: ['years', 'months', 'days', 'municipality', 'locality', 'neighborhood', 'zone', 'severity'],

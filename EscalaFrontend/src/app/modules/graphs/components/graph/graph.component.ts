@@ -2,24 +2,70 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Graph } from '../../../../models/graph.model';
 import { DataService } from '../../../../services/data.service';
 
 @Component({
   selector: 'app-graph',
   standalone: true,
   imports: [ChartModule, MatFormFieldModule, MatSelectModule],
-  templateUrl: './graph.component.html',
-  styleUrls: ['./graph.component.css'],  // Asegúrate de que es "styleUrls" en plural
+  template: `
+  <div class="card md:w-[35rem] w-96 shadow-2xl rounded-2xl flex flex-col py-3 gap-6 px-14 app-graph">
+    <p-chart
+      [type]="typeSelected"
+      [data]="data"
+      [options]="basicOptions"
+      height="300"
+      width="300"
+    ></p-chart>
+    <div class="flex flex-row justify-between gap-10">
+      <mat-form-field>
+        <mat-label>Selecciona la categoría</mat-label>
+        <mat-select
+          [(value)]="selectedEndpoint"
+          (selectionChange)="onEndpointChange($event.value)"
+        >
+          @for (item of endpoints; track item.value) {
+            <mat-option [value]="item.value">
+              {{ item.name }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Selecciona un filtro</mat-label>
+        <mat-select
+          [(value)]="selectedGraphType"
+          (selectionChange)="onSelectionChange($event.value)"
+        >
+          @for ( item of graphsTypes; track item.code) {
+            <mat-option [value]="item.code">
+              {{ item.name }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Selecciona un tipo de gráfica</mat-label>
+        <mat-select
+          [(value)]="typeSelected"
+          (selectionChange)="onSelectionChangeType($event.value)"
+        >
+          @for ( item of types; track item) {
+            <mat-option [value]="item">{{ item }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  `,
+  styleUrls: ['./graph.component.css'],
 })
 export class GraphComponent implements OnInit {
   dataService = inject(DataService);
 
   // Nuevos endpoints disponibles para seleccionar
   endpoints = [
-    { name: 'Traffic Collisions', value: '/traffic_collisions/' },
-    { name: 'Traffic Collisions Count', value: '/traffic_collisions_count/' },
-    { name: 'Traffic Collisions Point', value: '/traffic_collisions_point/' },
+    { name: 'Traffic Collisions Count', value: '/traffic_collisions_count/' }
   ];
 
   // Tipos de gráficos relacionados con los endpoints
@@ -28,46 +74,46 @@ export class GraphComponent implements OnInit {
     { name: 'Traffic Collisions Object Type', code: 'object_type' },
     { name: 'Traffic Collisions Area', code: 'area' },
     { name: 'Traffic Collisions Zone', code: 'zone' },
-    { name: 'Traffic Collisions Victims Year', code: 'years' },
-    { name: 'Traffic Collisions Victims Month', code: 'months' },
+    { name: 'Traffic Collisions Victims Year', code: 'YY' },
+    { name: 'Traffic Collisions Victims Month', code: 'MM' },
     { name: 'Traffic Collisions Road', code: 'neighborhood' },
     { name: 'Traffic Collisions Severity', code: 'severity' },
   ];
 
-  selectedEndpoint = this.endpoints[0].value;  // El endpoint seleccionado inicialmente
-  selectedGraphType = this.graphsTypes[0].code;  // El filtro seleccionado inicialmente
-  types: string[] | undefined;
-  typeSelected: any;
+  selectedEndpoint = this.endpoints[0].value;  
+  selectedGraphType = this.graphsTypes[4].code;
+
+  types: string[] = ['bar'];
+  typeSelected: any = this.types[0];
   data: any;
   basicOptions: any;
 
   // Cuando el usuario cambia el endpoint seleccionado
   onEndpointChange(selectedValue: string) {
     this.selectedEndpoint = selectedValue;
-    this.updateGraph();  // Actualiza el gráfico con el nuevo endpoint
+    this.updateGraph();
   }
 
   // Cuando el usuario cambia el filtro del gráfico
-  onSelectionChange(seletedValue: string) {
-    this.selectedGraphType = seletedValue;
+  onSelectionChange(selectedValue: string) {
+    this.selectedGraphType = selectedValue;
     this.updateGraph();
   }
 
   // Cuando el usuario cambia el tipo de gráfico
-  onSelectionChangeType(seletedValue: any) {
-    this.typeSelected = seletedValue;
+  onSelectionChangeType(selectedValue: string) {
+    this.typeSelected = selectedValue;
     this.updateGraph();
   }
 
   // Actualizar el gráfico en función del endpoint y el filtro seleccionados
   updateGraph() {
-    this.dataService.getGraphData(this.selectedEndpoint,this.selectedGraphType, ).subscribe((data) => {
+    this.dataService.getGraphData(this.selectedEndpoint, this.selectedGraphType).subscribe((data) => {
       this.data = {
         labels: data.labels,
         datasets: [data.datasets],
       };
       this.types = data.chart;
-
     });
   }
 

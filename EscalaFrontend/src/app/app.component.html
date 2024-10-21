@@ -1,1 +1,11 @@
-<app-main></app-main>
+<app-aside-bar></app-aside-bar>
+<div class="card flex justify-content-center fixed right-5 z-50">
+  <p-selectButton
+    [options]="stateOptions"
+    [(ngModel)]="value"
+    optionLabel="label"
+    optionValue="value"
+    (onChange)="onStateChange()"
+  />
+</div>
+<router-outlet></router-outlet>
