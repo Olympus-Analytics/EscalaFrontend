@@ -15,9 +15,9 @@ export class DataService {
 
 
   private graphFilters: { [key: string]: string[] } = {
-    traffic_collisions: ['years', 'months', 'days', 'hours', 'municipality', 'locality', 'neighborhood', 'zone', 'area', 'severity', 'type', 'object', 'object_type'],
-    traffic_collisions_count: ['years', 'months', 'days', 'municipality', 'locality', 'neighborhood', 'zone', 'severity'],
-    traffic_collisions_point: ['years', 'months', 'days', 'municipality', 'locality', 'neighborhood'],
+    traffic_collisions: ['YY', 'MM', 'DD', 'HH', 'municipality', 'locality', 'neighborhood', 'zone', 'area', 'severity', 'type', 'object', 'object_type'],
+    traffic_collisions_count: ['YY', 'MM', 'DD', 'municipality', 'locality', 'neighborhood', 'zone', 'severity'],
+    traffic_collisions_point: ['YY', 'MM', 'DD', 'municipality', 'locality', 'neighborhood'],
     tree_plot: ['avg_diameter', 'avg_height', 'basal_area', 'canopy_area', 'area_range', 'canopy_volume'],
     tree_plot_count: ['avg_diameter', 'avg_height', 'basal_area', 'area_covered', 'area_range'],
     tree_plot_area_count: ['avg_diameter', 'avg_height', 'canopy_area', 'canopy_volume', 'basal_area'],

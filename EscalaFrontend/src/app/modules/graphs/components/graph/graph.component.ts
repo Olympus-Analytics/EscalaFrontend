@@ -63,29 +63,39 @@ import { DataService } from '../../../../services/data.service';
 export class GraphComponent implements OnInit {
   dataService = inject(DataService);
 
-  // Nuevos endpoints disponibles para seleccionar
+  // Endpoints disponibles
   endpoints = [
     { name: 'Traffic Collisions Count', value: '/traffic_collisions_count/' },
     { name: 'Traffic Collisions Area Count', value: '/traffic_collisions_area_count/' },
     { name: 'Tree Plot Count', value: '/tree_plot_count/' },
-    { name: 'Tree Plot Area Count', value: '/tree_plot_area_count/' },  
+    { name: 'Tree Plot Area Count', value: '/tree_plot_area_count/' },
   ];
 
-  // Tipos de gráficos relacionados con los endpoints
-  graphsTypes = [
-    { name: 'Traffic Collisions Object', code: 'object' },
-    { name: 'Traffic Collisions Object Type', code: 'object_type' },
-    { name: 'Traffic Collisions Area', code: 'area' },
-    { name: 'Traffic Collisions Zone', code: 'zone' },
-    { name: 'Traffic Collisions Victims Year', code: 'YY' },
-    { name: 'Traffic Collisions Victims Month', code: 'MM' },
-    { name: 'Traffic Collisions Road', code: 'neighborhood' },
-    { name: 'Traffic Collisions Severity', code: 'severity' },
+  // Tipos de gráficos para los endpoints normales
+  generalGraphTypes = [
+    { name: 'Object', code: 'object' },
+    { name: 'Type', code: 'object_type' },
+    { name: 'Zone', code: 'zone' },
+    { name: 'Year', code: 'YY' },
+    { name: 'Area', code: 'area' },
+    { name: 'neighborhood', code: 'neighborhood' },
+    { name: 'Severity', code: 'severity' },
+    { name: 'Month', code: 'MM' },
+    { name: 'Day', code: 'DD' },
+    { name: 'Municipality', code: 'municipality' },
+    { name: 'Locality', code: 'locality' },
   ];
 
+  // Tipos de gráficos para los endpoints con "area"
+  areaGraphTypes = [
+    { name: 'Municipality', code: 'municipality' },
+    { name: 'Locality', code: 'locality' },
+    { name: 'neighborhood', code: 'neighborhood' },
+  ];
+
+  graphsTypes = this.generalGraphTypes; // Inicialmente, muestra los tipos generales
   selectedEndpoint = this.endpoints[0].value;
-  selectedGraphType = this.graphsTypes[4].code;
-
+  selectedGraphType = this.generalGraphTypes[0].code; // El primer tipo de gráfica
   types: string[] = ['bar'];
   typeSelected: any = this.types[0];
   data: any;
@@ -94,6 +104,16 @@ export class GraphComponent implements OnInit {
   // Cuando el usuario cambia el endpoint seleccionado
   onEndpointChange(selectedValue: string) {
     this.selectedEndpoint = selectedValue;
+
+    // Cambia los tipos de gráficos dependiendo si el endpoint contiene "area"
+    if (this.selectedEndpoint.includes('area')) {
+      this.graphsTypes = this.areaGraphTypes;
+      this.selectedGraphType = this.areaGraphTypes[0].code; // Selecciona el primer filtro para "area"
+    } else {
+      this.graphsTypes = this.generalGraphTypes;
+      this.selectedGraphType = this.generalGraphTypes[0].code; // Selecciona el primer filtro general
+    }
+
     this.updateGraph();
   }
 
