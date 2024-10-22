@@ -65,7 +65,10 @@ export class GraphComponent implements OnInit {
 
   // Nuevos endpoints disponibles para seleccionar
   endpoints = [
-    { name: 'Traffic Collisions Count', value: '/traffic_collisions_count/' }
+    { name: 'Traffic Collisions Count', value: '/traffic_collisions_count/' },
+    { name: 'Traffic Collisions Area Count', value: '/traffic_collisions_area_count/' },
+    { name: 'Tree Plot Count', value: '/tree_plot_count/' },
+    { name: 'Tree Plot Area Count', value: '/tree_plot_area_count/' },  
   ];
 
   // Tipos de gráficos relacionados con los endpoints
@@ -80,7 +83,7 @@ export class GraphComponent implements OnInit {
     { name: 'Traffic Collisions Severity', code: 'severity' },
   ];
 
-  selectedEndpoint = this.endpoints[0].value;  
+  selectedEndpoint = this.endpoints[0].value;
   selectedGraphType = this.graphsTypes[4].code;
 
   types: string[] = ['bar'];
