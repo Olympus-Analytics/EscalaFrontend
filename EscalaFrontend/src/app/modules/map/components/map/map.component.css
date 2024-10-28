@@ -1,5 +1,6 @@
-.map{
-  width: 100vw; /* Tamaño adecuado basado en viewport */
-  height: 100vh; /* Para ocupar toda la ventana */
-  position: relative; /* Asegúrate que se gestione adecuadamente */
+.map-container{
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  z-index: 1;
 }

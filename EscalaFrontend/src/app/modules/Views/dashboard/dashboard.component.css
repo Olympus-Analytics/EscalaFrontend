@@ -1,94 +1,10 @@
 .dashboard-container {
   display: grid;
-  gap: 5px;
-  justify-items: center;
+  place-content: center;
+  height: 100%;
+  width: 100vw;
 }
 
-.grid-1 {
-  grid-template-columns: 1fr;
-}
 
-.grid-2 {
-  grid-template-columns: 1fr 1fr;
-}
 
-.grid-3 {
-  grid-template-columns: 1fr 1fr ;
-}
 
-.grid-4 {
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-}
-
-.app-graph {
-  width: 100%;
-  max-width: 400px; /* Limita el tamaño máximo para pantallas grandes */
-  border: 1px solid #ccc;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  opacity: 0;
-}
-
-/* Estilos responsive para pantallas pequeñas */
-@media (max-width: 768px) {
-  .grid-2 {
-    grid-template-columns: 1fr;
-  }
-
-  .grid-3, .grid-4 {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .app-graph {
-    width: 90vw; /* Ajuste del ancho en pantallas pequeñas */
-  }
-}
-
-/* Estilos responsive para pantallas muy pequeñas */
-@media (max-width: 480px) {
-  .grid-2, .grid-3, .grid-4 {
-    grid-template-columns: 1fr;
-  }
-
-  .app-graph {
-    width: 100vw;
-  }
-}
-
-button {
-  background-color: var(--primary-color);
-  color: var(--quaternary-color);
-  padding: 10px 20px;
-  font-size: 16px;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  
-  max-width: 150px;
-}
-
-button:hover {
-  background-color: var(--secondary-color);
-  transform: scale(1.05);
-}
-
-button:active {
-  background-color: var(--terciary-color);
-  transform: scale(1);
-}
-
-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-/* Ajustes de los botones en pantallas pequeñas */
-@media (max-width: 768px) {
-  button {
-    font-size: 14px;
-    padding: 8px 16px;
-  }
-}

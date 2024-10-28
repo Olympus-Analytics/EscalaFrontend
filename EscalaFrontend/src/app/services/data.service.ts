@@ -25,13 +25,13 @@ export class DataService {
 
   constructor() {}
 
-  // Método que retorna los filtros específicos para el endpoint con el tipo de retorno definido
+
   private getFiltersForEndpoint(endpoint: string): string[] {
-    const endpointKey = endpoint.replace(/^\/|\/$/g, ''); // Eliminar las barras iniciales y finales
+    const endpointKey = endpoint.replace(/^\/|\/$/g, '');
     return this.graphFilters[endpointKey] || [];
   }
 
-  // Método genérico para obtener datos con filtros específicos
+
   getGraphData(
     endpoint: string,
     filter: string,
@@ -40,15 +40,14 @@ export class DataService {
   ): Observable<Graph> {
     let url = `${this.baseUrl}${endpoint}?filter=${filter}`;
 
-    // Obtener los filtros que aplican para este endpoint
+
     const applicableFilters = this.getFiltersForEndpoint(endpoint);
 
-    // Agregar el tiempo si aplica para el endpoint
+
     if (time && applicableFilters.includes('years')) {
       url += `&time=${time.start},${time.end}`;
     }
 
-    // Agregar espacio (vecindarios) si está presente y si el endpoint admite 'neighborhood'
     if (space && space.length > 0 && applicableFilters.includes('neighborhood')) {
       const spaceParam = space.map((neighborhood) => `"${neighborhood}"`).join(',');
       url += `&space=[${spaceParam}]`;
@@ -58,16 +57,23 @@ export class DataService {
     return this.http.get<Graph>(url);
   }
 
-  // Ejemplo para obtener rasters
   getRaster(year: number = 2000): Observable<Raster> {
     return this.http.get<Raster>(`${this.baseUrl}/ndvi?YY=${year}`);
   }
 
-  Get(url: string): Observable<Blob> {
+  GetImage(url: string): Observable<Blob> {
     return this.http.get(url, {
       responseType: 'blob',
       headers: {
         'Content-Type': 'application/octet-stream',
+      },
+    });
+  }
+  GetXML(url: string): Observable<string> {
+    return this.http.get(url, {
+      responseType: 'text',
+      headers: {
+        'Content-Type': 'application/xml',
       },
     });
   }

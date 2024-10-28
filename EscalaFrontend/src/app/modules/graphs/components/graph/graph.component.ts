@@ -9,14 +9,16 @@ import { DataService } from '../../../../services/data.service';
   standalone: true,
   imports: [ChartModule, MatFormFieldModule, MatSelectModule],
   template: `
-  <div class="card md:w-[35rem] w-96 shadow-2xl rounded-2xl flex flex-col py-3 gap-6 px-14 app-graph">
+  <div class=" w-full h-full flex flex-col py-3 gap-6 px-14 ">
     <p-chart
       [type]="typeSelected"
       [data]="data"
       [options]="basicOptions"
-      height="300"
-      width="300"
-    ></p-chart>
+      responsive="true"
+      height="60vh"
+      width="80vw"
+
+    />
     <div class="flex flex-row justify-between gap-10">
       <mat-form-field>
         <mat-label>Selecciona la categoría</mat-label>
@@ -50,7 +52,7 @@ import { DataService } from '../../../../services/data.service';
           [(value)]="typeSelected"
           (selectionChange)="onSelectionChangeType($event.value)"
         >
-          @for ( item of types; track item) {
+          @for (item of types; track item) {
             <mat-option [value]="item">{{ item }}</mat-option>
           }
         </mat-select>
@@ -63,7 +65,7 @@ import { DataService } from '../../../../services/data.service';
 export class GraphComponent implements OnInit {
   dataService = inject(DataService);
 
-  // Endpoints disponibles
+
   endpoints = [
     { name: 'Traffic Collisions Count', value: '/traffic_collisions_count/' },
     { name: 'Traffic Collisions Area Count', value: '/traffic_collisions_area_count/' },
@@ -71,7 +73,6 @@ export class GraphComponent implements OnInit {
     { name: 'Tree Plot Area Count', value: '/tree_plot_area_count/' },
   ];
 
-  // Tipos de gráficos para los endpoints normales
   generalGraphTypes = [
     { name: 'Object', code: 'object' },
     { name: 'Type', code: 'object_type' },
@@ -86,50 +87,46 @@ export class GraphComponent implements OnInit {
     { name: 'Locality', code: 'locality' },
   ];
 
-  // Tipos de gráficos para los endpoints con "area"
   areaGraphTypes = [
     { name: 'Municipality', code: 'municipality' },
     { name: 'Locality', code: 'locality' },
     { name: 'neighborhood', code: 'neighborhood' },
   ];
 
-  graphsTypes = this.generalGraphTypes; // Inicialmente, muestra los tipos generales
+  graphsTypes = this.generalGraphTypes;
   selectedEndpoint = this.endpoints[0].value;
-  selectedGraphType = this.generalGraphTypes[0].code; // El primer tipo de gráfica
+  selectedGraphType = this.generalGraphTypes[0].code;
   types: string[] = ['bar'];
   typeSelected: any = this.types[0];
   data: any;
   basicOptions: any;
 
-  // Cuando el usuario cambia el endpoint seleccionado
   onEndpointChange(selectedValue: string) {
     this.selectedEndpoint = selectedValue;
 
-    // Cambia los tipos de gráficos dependiendo si el endpoint contiene "area"
     if (this.selectedEndpoint.includes('area')) {
       this.graphsTypes = this.areaGraphTypes;
-      this.selectedGraphType = this.areaGraphTypes[0].code; // Selecciona el primer filtro para "area"
+      this.selectedGraphType = this.areaGraphTypes[0].code;
     } else {
       this.graphsTypes = this.generalGraphTypes;
-      this.selectedGraphType = this.generalGraphTypes[0].code; // Selecciona el primer filtro general
+      this.selectedGraphType = this.generalGraphTypes[0].code;
     }
 
     this.updateGraph();
   }
 
-  // Cuando el usuario cambia el filtro del gráfico
+
   onSelectionChange(selectedValue: string) {
     this.selectedGraphType = selectedValue;
     this.updateGraph();
   }
 
-  // Cuando el usuario cambia el tipo de gráfico
+
   onSelectionChangeType(selectedValue: string) {
     this.typeSelected = selectedValue;
     this.updateGraph();
   }
 
-  // Actualizar el gráfico en función del endpoint y el filtro seleccionados
   updateGraph() {
     this.dataService.getGraphData(this.selectedEndpoint, this.selectedGraphType).subscribe((data) => {
       this.data = {

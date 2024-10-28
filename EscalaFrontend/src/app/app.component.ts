@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { MainComponent } from './modules/Views/main/main.component';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
@@ -11,7 +11,7 @@ import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [MainComponent, RouterOutlet, AsideBarComponent, SelectButtonModule, FormsModule],
+  imports: [ RouterOutlet, AsideBarComponent, SelectButtonModule, FormsModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -42,6 +42,6 @@ export class AppComponent {
     } else if (this.value === 'graph') {
       this.router.navigate(['/dashboard']); // Navegar a la ruta dashboard
     }
-  } 
+  }
 }
 
