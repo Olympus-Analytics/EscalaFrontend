@@ -6,6 +6,13 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    colors: {
+      "primary": "#252B6D",
+      "secondary": "#EF7422",
+      "terciary": '#EFBF54',
+      "quaternary": '#EEFEFF',
+      "secondary-trans": '#ef7422a3'
+    }
   },
   plugins: [
     animations

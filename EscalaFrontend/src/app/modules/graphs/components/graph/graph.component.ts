@@ -10,16 +10,7 @@ import { DataService } from '../../../../services/data.service';
   imports: [ChartModule, MatFormFieldModule, MatSelectModule],
   template: `
   <div class=" w-full h-full flex flex-col py-3 gap-6 px-14 ">
-    <p-chart
-      [type]="typeSelected"
-      [data]="data"
-      [options]="basicOptions"
-      responsive="true"
-      height="60vh"
-      width="80vw"
-
-    />
-    <div class="flex flex-row justify-between gap-10">
+  <div class="flex flex-row justify-start items-center gap-8">
       <mat-form-field>
         <mat-label>Selecciona la categoría</mat-label>
         <mat-select
@@ -57,7 +48,27 @@ import { DataService } from '../../../../services/data.service';
           }
         </mat-select>
       </mat-form-field>
+      <div class=" flex flex-row  justify-between items-center gap-10">
+       <div class=" bg-secondary-trans text-quaternary rounded-2xl w-24 p-2 flex flex-col items-center">
+        <p>Mean</p>
+        <span class=" text-4xl" >98</span>
+      </div>
+      <div class=" bg-secondary-trans text-quaternary rounded-2xl w-44 p-2 flex flex-col items-center ">
+        <p>Standard Deviation</p>
+        <span class=" text-4xl" >98</span>
+      </div>
+      </div>
     </div>
+    <p-chart
+      [type]="typeSelected"
+      [data]="data"
+      [options]="basicOptions"
+      responsive="true"
+      height="60vh"
+      width="80vw"
+
+    />
+
   </div>
   `,
   styleUrls: ['./graph.component.css'],
