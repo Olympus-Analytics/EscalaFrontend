@@ -12,7 +12,7 @@ import { DataService } from '../../../../services/data.service';
   <div class=" w-full h-full flex flex-col py-3 gap-6 px-14 ">
   <div class="flex flex-row justify-start items-center gap-8">
       <mat-form-field>
-        <mat-label>Selecciona la categoría</mat-label>
+        <mat-label>Category</mat-label>
         <mat-select
           [(value)]="selectedEndpoint"
           (selectionChange)="onEndpointChange($event.value)"
@@ -25,7 +25,7 @@ import { DataService } from '../../../../services/data.service';
         </mat-select>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Selecciona un filtro</mat-label>
+        <mat-label>Filter</mat-label>
         <mat-select
           [(value)]="selectedGraphType"
           (selectionChange)="onSelectionChange($event.value)"
@@ -38,7 +38,7 @@ import { DataService } from '../../../../services/data.service';
         </mat-select>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Selecciona un tipo de gráfica</mat-label>
+        <mat-label>Figure type</mat-label>
         <mat-select
           [(value)]="typeSelected"
           (selectionChange)="onSelectionChangeType($event.value)"
@@ -90,7 +90,7 @@ export class GraphComponent implements OnInit {
     { name: 'Zone', code: 'zone' },
     { name: 'Year', code: 'YY' },
     { name: 'Area', code: 'area' },
-    { name: 'neighborhood', code: 'neighborhood' },
+    { name: 'Neighborhood', code: 'neighborhood' },
     { name: 'Severity', code: 'severity' },
     { name: 'Month', code: 'MM' },
     { name: 'Day', code: 'DD' },
@@ -101,7 +101,7 @@ export class GraphComponent implements OnInit {
   areaGraphTypes = [
     { name: 'Municipality', code: 'municipality' },
     { name: 'Locality', code: 'locality' },
-    { name: 'neighborhood', code: 'neighborhood' },
+    { name: 'Neighborhood', code: 'neighborhood' },
   ];
 
   graphsTypes = this.generalGraphTypes;
