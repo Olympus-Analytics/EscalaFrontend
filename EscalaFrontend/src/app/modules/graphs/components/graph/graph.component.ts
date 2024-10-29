@@ -85,21 +85,15 @@ export class GraphComponent implements OnInit {
   ];
 
   generalGraphTypes = [
-    { name: 'Object', code: 'object' },
-    { name: 'Type', code: 'object_type' },
-    { name: 'Zone', code: 'zone' },
+
     { name: 'Year', code: 'YY' },
-    { name: 'Area', code: 'area' },
-    { name: 'Neighborhood', code: 'neighborhood' },
-    { name: 'Severity', code: 'severity' },
     { name: 'Month', code: 'MM' },
-    { name: 'Day', code: 'DD' },
-    { name: 'Municipality', code: 'municipality' },
     { name: 'Locality', code: 'locality' },
+    { name: 'Neighborhood', code: 'neighborhood' },
+
   ];
 
   areaGraphTypes = [
-    { name: 'Municipality', code: 'municipality' },
     { name: 'Locality', code: 'locality' },
     { name: 'Neighborhood', code: 'neighborhood' },
   ];
