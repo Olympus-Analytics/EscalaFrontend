@@ -11,7 +11,8 @@ module.exports = {
       "secondary": "#EF7422",
       "terciary": '#EFBF54',
       "quaternary": '#EEFEFF',
-      "secondary-trans": '#ef7422a3'
+      "secondary-trans": '#ef7422a3',
+      "black": "#000",
     }
   },
   plugins: [

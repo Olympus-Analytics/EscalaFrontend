@@ -1,8 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DataService } from '../../../../services/data.service';
+import { FormsManagersService } from '../../../../services/forms-managers.service';
 
 @Component({
   selector: 'app-graph',
@@ -75,7 +76,7 @@ import { DataService } from '../../../../services/data.service';
 })
 export class GraphComponent implements OnInit {
   dataService = inject(DataService);
-
+  formControlService = inject(FormsManagersService);
 
   endpoints = [
     { name: 'Traffic Collisions Count', value: '/traffic_collisions_count/' },
@@ -132,8 +133,10 @@ export class GraphComponent implements OnInit {
     this.updateGraph();
   }
 
-  updateGraph() {
-    this.dataService.getGraphData(this.selectedEndpoint, this.selectedGraphType).subscribe((data) => {
+  updateGraph(rangeDates: Date[] | undefined = this.formControlService.rangeDates()) {
+    const dates : [number, number] | undefined = rangeDates?.map((date) => date.getFullYear()) as [number, number] | undefined; 
+    
+    this.dataService.getGraphData(this.selectedEndpoint, this.selectedGraphType, dates).subscribe((data) => {
       this.data = {
         labels: data.labels,
         datasets: [data.datasets],
@@ -141,8 +144,14 @@ export class GraphComponent implements OnInit {
       this.types = data.chart;
     });
   }
+  constructor() {
+    effect(() => {
+      this.updateGraph(this.formControlService.rangeDates());
+    });
+  }
 
   ngOnInit() {
+    
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');

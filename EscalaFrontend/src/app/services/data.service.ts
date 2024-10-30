@@ -35,7 +35,7 @@ export class DataService {
   getGraphData(
     endpoint: string,
     filter: string,
-    time: { start: number; end: number } | null = null,
+    time: [number, number] | null | undefined = null,
     space: string[] | null = null
   ): Observable<Graph> {
     let url = `${this.baseUrl}${endpoint}?filter=${filter}`;
@@ -44,8 +44,8 @@ export class DataService {
     const applicableFilters = this.getFiltersForEndpoint(endpoint);
 
 
-    if (time && applicableFilters.includes('years')) {
-      url += `&time=${time.start},${time.end}`;
+    if (time) {
+      url += `&time=(${time[0]},${time[1]})`;
     }
 
     if (space && space.length > 0 && applicableFilters.includes('neighborhood')) {

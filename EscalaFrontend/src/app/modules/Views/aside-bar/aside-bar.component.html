@@ -1,11 +1,44 @@
 <div>
-  <app-buttontab  (outputToggle)="toggle($event)"/>
+  <app-buttontab (outputToggle)="toggle($event)" />
 
-  <aside class="aside" [ngClass]="opened ? 'opened': ''">
-
+  <aside class="aside" [ngClass]="opened ? 'opened' : ''">
     <ul>
-      <li>filter 1</li>
-      <li>filter 2</li>
+      <h2 class=" text-quaternary text-4xl font-bold">Map</h2>
+      <li class="card flex-auto">
+        <label for="buttondisplay" class="font-bold block mb-2"> Year </label>
+        <p-calendar
+          [(ngModel)]="dateRaster"
+          [readonlyInput]="true"
+          dateFormat="yy"
+          showIcon="true"
+          view="year"
+          class="text-black"
+          [minDate]="minDate"
+          [maxDate]="maxDate"
+          
+        />
+      </li>
+      <li class="card flex-auto">
+        
+      </li>
+      <hr class="border-b-2 border-quaternary rounded-3xl" />
+      <h2 class=" text-quaternary text-4xl font-bold mb-2">Graph</h2>
+      <li class="card flex-auto">
+        <label for="buttondisplay" class="font-bold block mb-2"> Years </label>
+        <p-calendar
+          [(ngModel)]="rangeDates"
+          selectionMode="range"
+          [readonlyInput]="true"
+          dateFormat="yy"
+          showIcon="true"
+          view="year"
+          class="text-black"
+          [minDate]="minDate"
+          [maxDate]="maxDate"
+          
+        />
+      </li>
+      
     </ul>
   </aside>
 </div>
