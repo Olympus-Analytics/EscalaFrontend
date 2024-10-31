@@ -23,7 +23,7 @@
 .aside ul {
   display: flex;
   flex-direction: column;
-  padding-top: 10rem;
+  
   padding-left: 0;
   margin: 0;
   list-style: none;
