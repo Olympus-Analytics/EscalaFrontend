@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { finalize, Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
-import { Observable } from 'rxjs';
 import { Graph } from '../models/graph.model';
 import { Raster } from '../models/raster.model';
+import { StatesService } from './states.service';
 export enum RasterType {
   NDVI = 'ndvi',
   TEMPERATURE = 'landsurface_temperature',
@@ -16,7 +17,7 @@ export class DataService {
   private readonly baseUrl = environment.apiURL + '/api/data';
 
   http = inject(HttpClient);
-
+  statesService = inject(StatesService);
 
   private graphFilters: { [key: string]: string[] } = {
     traffic_collisions: ['YY', 'MM', 'DD', 'HH', 'municipality', 'locality', 'neighborhood', 'zone', 'area', 'severity', 'type', 'object', 'object_type'],
@@ -43,7 +44,7 @@ export class DataService {
     space: string[] | null = null
   ): Observable<Graph> {
     let url = `${this.baseUrl}${endpoint}?filter=${filter}`;
-
+    this.statesService.setLoadingState(true);
 
     const applicableFilters = this.getFiltersForEndpoint(endpoint);
 
@@ -58,20 +59,28 @@ export class DataService {
     }
 
     console.log('URL:', url);
-    return this.http.get<Graph>(url);
+    return this.http.get<Graph>(url).pipe(
+      finalize(() => { this.statesService.setLoadingState(false); })
+    );
   }
 
   getRaster(year: number = 2000, raterType: RasterType = RasterType.NDVI): Observable<Raster> {
-    return this.http.get<Raster>(`${this.baseUrl}/${raterType}?YY=${year}`);
+    this.statesService.setLoadingState(true);
+    return this.http.get<Raster>(`${this.baseUrl}/${raterType}?YY=${year}`).pipe(
+      finalize(() => { this.statesService.setLoadingState(false); })
+    );;
   }
 
   GetImage(url: string): Observable<Blob> {
+    this.statesService.setLoadingState(true);
     return this.http.get(url, {
       responseType: 'blob',
       headers: {
         'Content-Type': 'application/octet-stream',
       },
-    });
+    }).pipe(
+      finalize(() => { this.statesService.setLoadingState(false); })
+    );
   }
   GetXML(url: string): Observable<string> {
     return this.http.get(url, {
@@ -81,5 +90,9 @@ export class DataService {
       },
     });
   }
+  getPoint(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/point`);
+  }
+
 }
 

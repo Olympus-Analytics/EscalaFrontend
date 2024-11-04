@@ -22,7 +22,7 @@
 
 #checkbox:checked + label.toggle {
   top: 2rem;
-  left: 14rem;
+  left: 20rem;
   transform: scale(0.8);
 
 }

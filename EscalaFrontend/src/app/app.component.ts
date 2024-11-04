@@ -1,7 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { AsideBarComponent } from './modules/Views/aside-bar/aside-bar.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
@@ -17,16 +15,22 @@ import { StatesService } from './services/states.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  
   statesManager = inject(StatesService);
-  loadingState = this.statesManager.loadingState();
+ 
+  loadingState = false ;
   stateOptions: any[] = [
     { label: 'Map', value: 'map' },
     { label: 'Graphs', value: 'graph' }
   ];
   router = inject(Router);
   value: string = 'map'; 
-
+  ngOnInit(): void {
+    this.statesManager.loadingState$.subscribe((state: boolean) => {
+      this.loadingState = state;
+    });
+  }
   constructor() {
   
     this.router.events.pipe(

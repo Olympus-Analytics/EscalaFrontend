@@ -1,11 +1,11 @@
 .aside {
   position: fixed;
   top: 0;
-  left: -18rem;
+  left: -24rem;
   height: 100vh;
   background-color: var(--terciary-color);
   opacity: 0.8;
-  width: 18rem;
+  width: 24rem;
   z-index: 400;
   display: flex;
   padding-top: 5rem;

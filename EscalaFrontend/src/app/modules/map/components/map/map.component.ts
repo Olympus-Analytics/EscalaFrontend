@@ -34,6 +34,8 @@ export class MapComponent implements OnInit {
       }
     });
 
+    effect(() => {
+    });
     
     effect(() => {
       if (this.layerManager['LST Raster']()) {
@@ -42,6 +44,8 @@ export class MapComponent implements OnInit {
         this.removeRasterLayer('LST Raster');
       }
     });
+
+
   }
 
   options = {
