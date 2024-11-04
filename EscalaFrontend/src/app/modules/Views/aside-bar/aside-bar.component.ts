@@ -4,13 +4,15 @@ import { ButtontabComponent } from '../../ui/buttontab/buttontab.component';
 import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { FormsManagersService } from '../../../services/forms-managers.service';
+import { LayerManagerComponent } from './components/layer-manager/layer-manager.component';
+import { GraphComponent } from "../../graphs/components/graph/graph.component";
 
 
 
 @Component({
   selector: 'app-aside-bar',
   standalone: true,
-  imports: [NgClass, ButtontabComponent, FormsModule, CalendarModule],
+  imports: [NgClass, ButtontabComponent, FormsModule, CalendarModule, LayerManagerComponent, GraphComponent],
   templateUrl: './aside-bar.component.html',
   styleUrl: './aside-bar.component.css',
 })
@@ -26,6 +28,7 @@ export class AsideBarComponent {
     {name: '2021', code: '2021'},
     {name: '2022', code: '2022'},
   ]
+  
   minDate: Date = new Date(2016, 0, 1);
   maxDate: Date = new Date(2022, 11, 31);
   rangeDates = this.formControlService.rangeDates;

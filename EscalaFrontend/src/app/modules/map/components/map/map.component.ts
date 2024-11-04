@@ -1,11 +1,10 @@
 import { Component, effect, inject, OnInit } from '@angular/core';
-import { DataService } from '../../../../services/data.service';
+import { DataService, RasterType } from '../../../../services/data.service';
 import { Raster } from '../../../../models/raster.model';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { latLng, tileLayer, imageOverlay, Layer, latLngBounds, LatLngTuple } from 'leaflet';
 import { getCoordinatesFromAuxXml } from '../../../../utils/GetCoordinateFromXML.utils';
 import { FormsManagersService } from '../../../../services/forms-managers.service';
-
 import { StatesService } from '../../../../services/states.service';
 
 @Component({
@@ -18,19 +17,29 @@ import { StatesService } from '../../../../services/states.service';
 export class MapComponent implements OnInit {
   dataService = inject(DataService);
   formControlService = inject(FormsManagersService);
-  raster: HTMLImageElement | undefined;
-  layers: Layer[] = []; // Inicializamos sin raster
+  layerManager = Object.fromEntries(
+    this.formControlService.layersActivated.map(layer => [layer.name, layer.signal])
+  );
+  rasterLayers: { [key: string]: Layer } = {};
+  layers: Layer[] = [];
   stateManager = inject(StatesService);
+
   constructor() {
-   
+    
     effect(() => {
-      const dateRaster = this.formControlService.dateRaster();
-      if (dateRaster) {
-        
-        this.updateRaster(dateRaster);
+      if (this.layerManager['Ndvi Raster']()) {
+        this.updateRaster(this.formControlService.dateRaster(), RasterType.NDVI, 'Ndvi Raster');
       } else {
-        
-        this.layers = [...this.options.layers];
+        this.removeRasterLayer('Ndvi Raster');
+      }
+    });
+
+    
+    effect(() => {
+      if (this.layerManager['LST Raster']()) {
+        this.updateRaster(this.formControlService.dateRaster(), RasterType.TEMPERATURE, 'LST Raster');
+      } else {
+        this.removeRasterLayer('LST Raster');
       }
     });
   }
@@ -44,16 +53,15 @@ export class MapComponent implements OnInit {
     zoomControl: false
   };
 
-  updateRaster(time: Date | undefined = undefined): void {
+  updateRaster(time: Date | undefined = undefined, rasterType: RasterType, layerKey: string): void {
     const year = time?.getFullYear() || 2000;
-    
-    this.dataService.getRaster(year).subscribe((raster: Raster) => {
+
+    this.dataService.getRaster(year, rasterType).subscribe((raster: Raster) => {
       this.dataService.GetImage(raster.RASTER_URL).subscribe((image: Blob) => {
         const url = URL.createObjectURL(image);
         const img = new Image();
 
         img.src = url;
-        this.raster = img;
         img.onload = () => {
           console.log('Image loaded:', img.width, img.height);
 
@@ -67,14 +75,27 @@ export class MapComponent implements OnInit {
               const bounds = latLngBounds(topLeft, bottomRight);
               const imageLayer = imageOverlay(url, bounds);
 
-              // Actualiza las capas para incluir el nuevo raster
-              this.layers = [...this.options.layers, imageLayer];
+              // Actualiza la capa del raster
+              this.rasterLayers[layerKey] = imageLayer;
+              this.updateLayers();
             });
           });
         };
       });
     });
-    
+  }
+
+  removeRasterLayer(layerKey: string): void {
+    delete this.rasterLayers[layerKey];
+    this.updateLayers();
+  }
+
+  updateLayers(): void {
+    // Combina las capas base y raster activas
+    this.layers = [
+      ...this.options.layers,
+      ...Object.values(this.rasterLayers)
+    ];
   }
 
   ngOnInit(): void {}

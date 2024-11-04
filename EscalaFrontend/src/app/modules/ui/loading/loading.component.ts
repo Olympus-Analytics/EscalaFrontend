@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './loading.component.css'
 })
 export class LoadingComponent {
-
+  
 }

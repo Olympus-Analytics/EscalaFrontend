@@ -4,6 +4,10 @@ import { environment } from '../../environments/environment.development';
 import { Observable } from 'rxjs';
 import { Graph } from '../models/graph.model';
 import { Raster } from '../models/raster.model';
+export enum RasterType {
+  NDVI = 'ndvi',
+  TEMPERATURE = 'landsurface_temperature',
+}
 
 @Injectable({
   providedIn: 'root',
@@ -57,8 +61,8 @@ export class DataService {
     return this.http.get<Graph>(url);
   }
 
-  getRaster(year: number = 2000): Observable<Raster> {
-    return this.http.get<Raster>(`${this.baseUrl}/ndvi?YY=${year}`);
+  getRaster(year: number = 2000, raterType: RasterType = RasterType.NDVI): Observable<Raster> {
+    return this.http.get<Raster>(`${this.baseUrl}/${raterType}?YY=${year}`);
   }
 
   GetImage(url: string): Observable<Blob> {
