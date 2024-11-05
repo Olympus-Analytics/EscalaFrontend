@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./hero.component.css'] // Corregido: 'styleUrls' debe ser un array
 })
 export class HeroComponent {
-  images = ['/images/image1.JPG', '/images/image2.JPG', '/images/image3.JPG' , '/images/image4.JPG']; // Imágenes para la galería
+  images = ['/images/image1.JPG', '/images/image2.JPG', '/images/image3.JPG', '/images/image4.JPG', '/images/image5.JPG', '/images/image6.JPG', '/images/image7.JPG', '/images/image8.JPG', '/images/image9.JPG', '/images/image10.JPG']; // Imágenes para la galería
 
   position: string = 'bottom';
 
@@ -24,5 +24,5 @@ export class HeroComponent {
     { label: 'Right', value: 'right' }
   ];
 
-  
+
 }

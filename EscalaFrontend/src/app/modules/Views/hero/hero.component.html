@@ -1,38 +1,34 @@
 <section class=" bg-black w-full h-[100vh] overflow-hidden relative snap flex">
-   
-    <div class="absolute top-0 left-0 w-full h-[30%] animate-blurred-fade-in z-0">
-      <p-galleria 
-        [value]="images" 
-        thumbnailsPosition="right" 
-        [numVisible]="5"
-        style="height: 100%; width: 100%">
-        
-        <!-- Plantilla para las imágenes principales -->
-        <ng-template pTemplate="item" let-item>
-          <img 
-            [src]="item" 
-            class="w-full h-full object-cover"
-            style="display: block;" 
-          />
-        </ng-template>
-  
-        
-        <ng-template pTemplate="thumbnail" let-item>
-          <div class="grid grid-nogutter justify-content-center">
-            <img [src]="item" class="object-cover h-96" style="margin: 0;" />
-          </div>
-        </ng-template>
-        
-      </p-galleria>
+
+    <div class="absolute top-0 left-0 w-full h-[100%] animate-blurred-fade-in z-0">
+        <p-galleria [value]="images" thumbnailsPosition="right" [numVisible]="10" style="height: 100%; width: 100%"
+            [circular]="true" [showItemNavigators]="true" class=" text-quaternary"
+            [autoPlay]="true" >
+
+            <!-- Plantilla para las imágenes principales -->
+            <ng-template pTemplate="item" let-item>
+                <div class=" h-[100vh]">
+                    <img [src]="item" class="w-[102vw] h-[102vh] object-cover" />
+                </div>
+            </ng-template>
+
+
+            <ng-template pTemplate="thumbnail" class=" " let-item>
+                <div class="grid grid-nogutter justify-content-center overflow-hidden">
+                    <img [src]="item"
+                        class="object-cover  h-[1.8rem] w-[24rem] hover:scale-150 transition-all animate-duration-200" />
+                </div>
+            </ng-template>
+
+        </p-galleria>
     </div>
-  
+
     <!-- Contenido de la sección -->
     <div class="w-full h-full flex flex-col justify-center items-center gap-24 relative z-10 pointer-events-none">
-      <div class="hero-container text-center bg-opacity-50 p-8 rounded w-full">
-        <h1 class="text-6xl text-primary font-bold">Welcome to the Dashboard</h1>
-        <p class="text-2xl text-secondary">This is a dashboard that shows the data of the different endpoints</p>
-        <a routerLink="/map" class="text-secondary pointer-events-auto">Translate</a>
-      </div>
+        <div class="hero-container text-center bg-opacity-50 p-8 rounded w-full">
+            <h1 class="text-6xl text-primary font-bold">Welcome to the Dashboard</h1>
+            <p class="text-2xl text-secondary">This is a dashboard that shows the data of the different endpoints</p>
+            <a routerLink="/map" class="text-secondary pointer-events-auto">Translate</a>
+        </div>
     </div>
-  </section>
-  
+</section>
