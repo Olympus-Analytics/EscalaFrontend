@@ -5,17 +5,46 @@
 @tailwind components;
 @tailwind utilities;
 
-:root{
-  --primary-color: #252B6D;
-  --secondary-color: #EF7422;
-  --terciary-color: #EFBF54;
-  --quaternary-color: #EEFEFF;
-  --highlight-bg: #EF7422;
+:root {
+  --primary-color: #252b6d;
+  --secondary-color: #ef7422;
+  --terciary-color: #efbf54;
+  --quaternary-color: #eefeff;
+  --highlight-bg: #ef7422;
   --secondary-trans: #ef7422a3;
-
 }
 
+html {
+  scroll-behavior: smooth;
+}	
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+  backdrop-filter: blur(10px);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
 
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  scroll-snap-type: y mandatory;
+}
+.snap{
+  scroll-snap-align: center;
+}

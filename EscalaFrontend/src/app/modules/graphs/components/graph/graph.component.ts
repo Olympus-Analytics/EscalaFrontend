@@ -9,69 +9,7 @@ import { FormsManagersService } from '../../../../services/forms-managers.servic
   selector: 'app-graph',
   standalone: true,
   imports: [ChartModule, MatFormFieldModule, MatSelectModule],
-  template: `
-  <div class=" w-full h-full flex flex-col py-3 gap-6 px-14 ">
-  <div class="flex flex-row justify-start items-center gap-8">
-      <mat-form-field>
-        <mat-label>Category</mat-label>
-        <mat-select
-          [(value)]="selectedEndpoint"
-          (selectionChange)="onEndpointChange($event.value)"
-        >
-          @for (item of endpoints; track item.value) {
-            <mat-option [value]="item.value">
-              {{ item.name }}
-            </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Filter</mat-label>
-        <mat-select
-          [(value)]="selectedGraphType"
-          (selectionChange)="onSelectionChange($event.value)"
-        >
-          @for ( item of graphsTypes; track item.code) {
-            <mat-option [value]="item.code">
-              {{ item.name }}
-            </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Figure type</mat-label>
-        <mat-select
-          [(value)]="typeSelected"
-          (selectionChange)="onSelectionChangeType($event.value)"
-        >
-          @for (item of types; track item) {
-            <mat-option [value]="item">{{ item }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-      <div class=" flex flex-row  justify-between items-center gap-10">
-       <div class=" bg-secondary-trans text-quaternary rounded-2xl w-24 p-2 flex flex-col items-center">
-        <p>Mean</p>
-        <span class=" text-4xl" >98</span>
-      </div>
-      <div class=" bg-secondary-trans text-quaternary rounded-2xl w-44 p-2 flex flex-col items-center ">
-        <p>Standard Deviation</p>
-        <span class=" text-4xl" >98</span>
-      </div>
-      </div>
-    </div>
-    <p-chart
-      [type]="typeSelected"
-      [data]="data"
-      [options]="basicOptions"
-      responsive="true"
-      height="60vh"
-      width="80vw"
-
-    />
-
-  </div>
-  `,
+  templateUrl: './graph.component.html',
   styleUrls: ['./graph.component.css'],
 })
 export class GraphComponent implements OnInit {
@@ -106,7 +44,7 @@ export class GraphComponent implements OnInit {
   typeSelected: any = this.types[0];
   data: any;
   basicOptions: any;
-
+  mean: number = 0;
   onEndpointChange(selectedValue: string) {
     this.selectedEndpoint = selectedValue;
 
@@ -135,7 +73,9 @@ export class GraphComponent implements OnInit {
 
   updateGraph(rangeDates: Date[] | undefined = this.formControlService.rangeDates()) {
     const dates : [number, number] | undefined = rangeDates?.map((date) => date.getFullYear()) as [number, number] | undefined; 
-    
+    this.dataService.getGraphData(this.selectedEndpoint, "municipality" , dates).subscribe((data) => {
+     //TODO: Implement the logic to calculate the mean of the data
+    });
     this.dataService.getGraphData(this.selectedEndpoint, this.selectedGraphType, dates).subscribe((data) => {
       this.data = {
         labels: data.labels,

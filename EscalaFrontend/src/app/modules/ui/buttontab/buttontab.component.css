@@ -17,7 +17,7 @@
   transition-duration: .3s;
   top: 2rem;
   left: 2rem;
-  z-index: 2000;
+  z-index: 3000;
 }
 
 #checkbox:checked + label.toggle {

@@ -18,7 +18,7 @@ import { StatesService } from './services/states.service';
 export class AppComponent implements OnInit {
   
   statesManager = inject(StatesService);
- 
+  disabled = this.statesManager.disabled;
   loadingState = false ;
   stateOptions: any[] = [
     { label: 'Map', value: 'map' },
@@ -30,26 +30,36 @@ export class AppComponent implements OnInit {
     this.statesManager.loadingState$.subscribe((state: boolean) => {
       this.loadingState = state;
     });
+    
   }
+  
   constructor() {
   
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
-      
-      if (event.url === '/') {
+      if(event.url === '/'){
+        this.statesManager.disabled.set(false);
+      } 
+
+      if (event.url === '/map') {
         this.value = 'map';
+        this.statesManager.disabled.set(true);
       } else if (event.url === '/dashboard') {
         this.value = 'graph';
+        this.statesManager.disabled.set(true);
       }
+      
     });
   }
+  
   onStateChange() {
     if (this.value === 'map') {
-      this.router.navigate(['/']);
+      this.router.navigate(['/map']);
     } else if (this.value === 'graph') {
       this.router.navigate(['/dashboard']); 
     }
+   
   }
 }
 

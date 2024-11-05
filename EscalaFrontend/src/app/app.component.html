@@ -1,15 +1,20 @@
+
+
 @if (loadingState) {
   <app-loading class="w-[100vw] h-[100vh] fixed z-[9999] grid place-items-center bg-quaternary bg-opacity-60" />
 }
 
-<app-aside-bar></app-aside-bar>
-<div class="card flex justify-content-center fixed right-5 z-50">
-  <p-selectButton
-    [options]="stateOptions"
-    [(ngModel)]="value"
-    optionLabel="label"
-    optionValue="value"
-    (onChange)="onStateChange()"
-  />
-</div>
-<router-outlet></router-outlet>
+@if(disabled()){
+  <app-aside-bar></app-aside-bar>
+  <div class="card flex justify-content-center fixed right-5 top-10 z-50">
+    <p-selectButton
+      [options]="stateOptions"
+      [(ngModel)]="value"
+      optionLabel="label"
+      optionValue="value"
+      (onChange)="onStateChange()"
+    />
+  </div>
+}
+
+<router-outlet ></router-outlet>
