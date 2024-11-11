@@ -1,10 +1,10 @@
-
-
 @if (loadingState) {
-  <app-loading class="w-[100vw] h-[100vh] fixed z-[9999] grid place-items-center bg-quaternary bg-opacity-60" />
+  <app-loading
+    class="w-[100vw] h-[100vh] fixed z-[9999] grid place-items-center bg-quaternary bg-opacity-60"
+  />
 }
 
-@if(disabled()){
+@if (disabled()) {
   <app-aside-bar></app-aside-bar>
   <div class="card flex justify-content-center fixed right-5 top-10 z-50">
     <p-selectButton
@@ -17,4 +17,4 @@
   </div>
 }
 
-<router-outlet ></router-outlet>
+<router-outlet></router-outlet>
