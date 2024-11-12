@@ -1,63 +1,102 @@
 import { Component, effect, inject, OnInit } from '@angular/core';
-import { DataService, RasterType } from '../../../../services/data.service';
+import {
+  DataService,
+  PointsEndpoint,
+  RasterType,
+} from '../../../../services/data.service';
 import { Raster } from '../../../../models/raster.model';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
-import { latLng, tileLayer, imageOverlay, Layer, latLngBounds, LatLngTuple } from 'leaflet';
+import {
+  latLng,
+  tileLayer,
+  imageOverlay,
+  Layer,
+  latLngBounds,
+  LatLngTuple,
+  marker,
+  Marker,
+} from 'leaflet';
 import { getCoordinatesFromAuxXml } from '../../../../utils/GetCoordinateFromXML.utils';
 import { FormsManagersService } from '../../../../services/forms-managers.service';
 import { StatesService } from '../../../../services/states.service';
+import { Feature } from '@/models/points.model';
 
 @Component({
   selector: 'app-map',
   standalone: true,
   imports: [LeafletModule],
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+  styleUrls: ['./map.component.css'],
 })
 export class MapComponent implements OnInit {
   dataService = inject(DataService);
   formControlService = inject(FormsManagersService);
   layerManager = Object.fromEntries(
-    this.formControlService.layersActivated.map(layer => [layer.name, layer.signal])
+    this.formControlService.layersActivated.map((layer) => [
+      layer.name,
+      layer.signal,
+    ]),
   );
   rasterLayers: { [key: string]: Layer } = {};
+  pointLayers: Marker[] = [];
   layers: Layer[] = [];
   stateManager = inject(StatesService);
 
   constructor() {
-    
     effect(() => {
       if (this.layerManager['Ndvi Raster']()) {
-        this.updateRaster(this.formControlService.dateRaster(), RasterType.NDVI, 'Ndvi Raster');
+        this.updateRaster(
+          this.formControlService.dateRaster(),
+          RasterType.NDVI,
+          'Ndvi Raster',
+        );
       } else {
         this.removeRasterLayer('Ndvi Raster');
       }
     });
 
     effect(() => {
+      if (this.layerManager['Collision Points']()) {
+        this.dataService
+          .getPoint(PointsEndpoint.TRAFFIC_COLLISIONS)
+          .subscribe((points: Feature[]) => {
+            this.addPointsToMap(points);
+          });
+      } else {
+        this.removePointLayers();
+      }
     });
-    
+
     effect(() => {
       if (this.layerManager['LST Raster']()) {
-        this.updateRaster(this.formControlService.dateRaster(), RasterType.TEMPERATURE, 'LST Raster');
+        this.updateRaster(
+          this.formControlService.dateRaster(),
+          RasterType.TEMPERATURE,
+          'LST Raster',
+        );
       } else {
         this.removeRasterLayer('LST Raster');
       }
     });
-
-
   }
 
   options = {
     layers: [
-      tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
+      tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '...',
+      }),
     ],
     zoom: 12,
     center: latLng(10.9685, -74.7813),
-    zoomControl: false
+    zoomControl: false,
   };
 
-  updateRaster(time: Date | undefined = undefined, rasterType: RasterType, layerKey: string): void {
+  updateRaster(
+    time: Date | undefined = undefined,
+    rasterType: RasterType,
+    layerKey: string,
+  ): void {
     const year = time?.getFullYear() || 2000;
 
     this.dataService.getRaster(year, rasterType).subscribe((raster: Raster) => {
@@ -69,21 +108,31 @@ export class MapComponent implements OnInit {
         img.onload = () => {
           console.log('Image loaded:', img.width, img.height);
 
-          this.dataService.GetXML(raster.RASTER_AUX).subscribe((xml: string) => {
-            getCoordinatesFromAuxXml(xml, img.width, img.height).then((coordinates) => {
-              console.log('Coordinates:', coordinates);
+          this.dataService
+            .GetXML(raster.RASTER_AUX)
+            .subscribe((xml: string) => {
+              getCoordinatesFromAuxXml(xml, img.width, img.height).then(
+                (coordinates) => {
+                  console.log('Coordinates:', coordinates);
 
-              const topLeft: LatLngTuple = [coordinates.topLeft[0], coordinates.topLeft[1]];
-              const bottomRight: LatLngTuple = [coordinates.bottomRight[0], coordinates.bottomRight[1]];
+                  const topLeft: LatLngTuple = [
+                    coordinates.topLeft[0],
+                    coordinates.topLeft[1],
+                  ];
+                  const bottomRight: LatLngTuple = [
+                    coordinates.bottomRight[0],
+                    coordinates.bottomRight[1],
+                  ];
 
-              const bounds = latLngBounds(topLeft, bottomRight);
-              const imageLayer = imageOverlay(url, bounds);
+                  const bounds = latLngBounds(topLeft, bottomRight);
+                  const imageLayer = imageOverlay(url, bounds);
 
-              // Actualiza la capa del raster
-              this.rasterLayers[layerKey] = imageLayer;
-              this.updateLayers();
+                  // Actualiza la capa del raster
+                  this.rasterLayers[layerKey] = imageLayer;
+                  this.updateLayers();
+                },
+              );
             });
-          });
         };
       });
     });
@@ -94,11 +143,31 @@ export class MapComponent implements OnInit {
     this.updateLayers();
   }
 
+  addPointsToMap(points: Feature[]): void {
+    this.removePointLayers();
+    points.forEach((point) => {
+      if (point.geometry && point.geometry.coordinates.length >= 2) {
+        const pointMarker = marker([
+          point.geometry.coordinates[1],
+          point.geometry.coordinates[0],
+        ]);
+        this.pointLayers.push(pointMarker);
+      }
+    });
+    this.updateLayers();
+  }
+
+  removePointLayers(): void {
+    this.pointLayers = [];
+    this.updateLayers();
+  }
+
   updateLayers(): void {
-    // Combina las capas base y raster activas
+    // Combina las capas base y raster activas con los puntos
     this.layers = [
       ...this.options.layers,
-      ...Object.values(this.rasterLayers)
+      ...Object.values(this.rasterLayers),
+      ...this.pointLayers,
     ];
   }
 

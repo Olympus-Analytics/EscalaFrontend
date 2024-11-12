@@ -1,9 +1,12 @@
 <div class="card flex flex-col justify-content-center gap-4">
-    @for (item of layersActivated; track $index) {
-        
+  @for (item of layersActivated; track $index) {
     <div class="flex align-items-center">
-        <p-checkbox [(ngModel)]="item.signal" [label]="item.name" [binary]="true" inputId="binary" />
-    </div> 
-    
-    }
+      <p-checkbox
+        [(ngModel)]="item.signal"
+        [label]="item.name"
+        [binary]="true"
+        inputId="binary"
+      />
+    </div>
+  }
 </div>

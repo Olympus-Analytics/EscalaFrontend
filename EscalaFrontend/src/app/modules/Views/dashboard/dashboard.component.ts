@@ -11,12 +11,12 @@ import {
 
 } from '@angular/animations';
 
-import { NgClass } from '@angular/common';
+
 import { DashboardService } from './service/dashboard.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [GraphComponent, NgClass],
+  imports: [GraphComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
   animations: [

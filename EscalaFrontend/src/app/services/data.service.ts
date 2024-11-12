@@ -1,15 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { finalize, Observable } from 'rxjs';
+import { finalize, map, Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { Graph } from '../models/graph.model';
 import { Raster } from '../models/raster.model';
 import { StatesService } from './states.service';
+import { Feature, Points } from '../models/points.model';
+import { PointsAdapater } from '../adapters/points.adapter';
 export enum RasterType {
   NDVI = 'ndvi',
   TEMPERATURE = 'landsurface_temperature',
 }
-
+export enum PointsEndpoint {
+  TRAFFIC_COLLISIONS = '/traffic_collisions_point/',
+  TREE_PLOT = '/tree_plot_point/',
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -164,6 +169,7 @@ export class DataService {
         }),
       );
   }
+
   GetXML(url: string): Observable<string> {
     return this.http.get(url, {
       responseType: 'text',
@@ -172,7 +178,15 @@ export class DataService {
       },
     });
   }
-  getPoint(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/point`);
+  getPoint(endpoint: PointsEndpoint): Observable<Feature[]> {
+    this.statesService.setLoadingState(true);
+    return this.http
+      .get<Points>(`${this.baseUrl}${endpoint}`)
+      .pipe(map((info) => PointsAdapater(info)))
+      .pipe(
+        finalize(() => {
+          this.statesService.setLoadingState(false);
+        }),
+      );
   }
 }
