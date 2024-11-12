@@ -13,8 +13,9 @@ import {
   Layer,
   latLngBounds,
   LatLngTuple,
-  marker,
-  Marker,
+  circleMarker,
+  CircleMarker,
+  Canvas,
 } from 'leaflet';
 import { getCoordinatesFromAuxXml } from '../../../../utils/GetCoordinateFromXML.utils';
 import { FormsManagersService } from '../../../../services/forms-managers.service';
@@ -38,7 +39,7 @@ export class MapComponent implements OnInit {
     ]),
   );
   rasterLayers: { [key: string]: Layer } = {};
-  pointLayers: Marker[] = [];
+  pointLayers: Layer[] = [];
   layers: Layer[] = [];
   stateManager = inject(StatesService);
 
@@ -54,13 +55,23 @@ export class MapComponent implements OnInit {
         this.removeRasterLayer('Ndvi Raster');
       }
     });
-
+    effect(() => {
+      if (this.layerManager['Tree Points']()) {
+        this.dataService
+          .getPoint(PointsEndpoint.TREE_PLOT)
+          .subscribe((points: Feature[]) => {
+            this.addPointsToMap(points, 'tree');
+          });
+      } else {
+        this.removePointLayers();
+      }
+    });
     effect(() => {
       if (this.layerManager['Collision Points']()) {
         this.dataService
           .getPoint(PointsEndpoint.TRAFFIC_COLLISIONS)
           .subscribe((points: Feature[]) => {
-            this.addPointsToMap(points);
+            this.addPointsToMap(points, 'collision');
           });
       } else {
         this.removePointLayers();
@@ -143,14 +154,24 @@ export class MapComponent implements OnInit {
     this.updateLayers();
   }
 
-  addPointsToMap(points: Feature[]): void {
+  addPointsToMap(points: Feature[], pointType: string): void {
     this.removePointLayers();
+    const canvasRenderer = new Canvas();
+    const pointColor = pointType === 'tree' ? '#008000' : '#660000'; // Verde para puntos de árboles, rojo oscuro para colisiones
+
     points.forEach((point) => {
       if (point.geometry && point.geometry.coordinates.length >= 2) {
-        const pointMarker = marker([
-          point.geometry.coordinates[1],
-          point.geometry.coordinates[0],
-        ]);
+        const pointMarker = circleMarker(
+          [point.geometry.coordinates[1], point.geometry.coordinates[0]],
+          {
+            radius: 5,
+            color: pointColor,
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8,
+            renderer: canvasRenderer, // Usar el renderizador Canvas
+          },
+        );
         this.pointLayers.push(pointMarker);
       }
     });
@@ -163,7 +184,6 @@ export class MapComponent implements OnInit {
   }
 
   updateLayers(): void {
-    // Combina las capas base y raster activas con los puntos
     this.layers = [
       ...this.options.layers,
       ...Object.values(this.rasterLayers),
