@@ -1,8 +1,11 @@
-<div class=" w-full h-full flex flex-col py-3 gap-6 px-14 ">
+<div class="w-full h-full flex flex-col py-3 gap-6 px-14">
   <div class="flex flex-row justify-start items-center gap-8">
     <mat-form-field>
       <mat-label>Category</mat-label>
-      <mat-select [(value)]="selectedEndpoint" (selectionChange)="onEndpointChange($event.value)">
+      <mat-select
+        [(value)]="selectedEndpoint"
+        (selectionChange)="onEndpointChange($event.value)"
+      >
         @for (item of endpoints; track item.value) {
           <mat-option [value]="item.value">
             {{ item.name }}
@@ -12,24 +15,30 @@
     </mat-form-field>
 
     <mat-form-field>
-      @if(!isTree){
+      @if (!isTree) {
         <mat-label>Spatial</mat-label>
-      }@else{
+      } @else {
         <mat-label>Filter</mat-label>
       }
-      <mat-select [(value)]="selectedGraphType" (selectionChange)="onSelectionChange($event.value)">
-        @for ( item of graphsTypes; track item.code) {
+      <mat-select
+        [(value)]="selectedGraphType"
+        (selectionChange)="onSelectionChange($event.value)"
+      >
+        @for (item of graphsTypes; track item.code) {
           <mat-option [value]="item.code">
             {{ item.name }}
           </mat-option>
         }
       </mat-select>
     </mat-form-field>
-    @if(!isTree){
+    @if (!isTree) {
       <mat-form-field>
         <mat-label>Temporal</mat-label>
-        <mat-select [(value)]="selectedTimeGraphType" (selectionChange)="onSelectionTimeChange($event.value)">
-          @for ( item of TimeGraphTypes; track item.code) {
+        <mat-select
+          [(value)]="selectedTimeGraphType"
+          (selectionChange)="onSelectionTimeChange($event.value)"
+        >
+          @for (item of TimeGraphTypes; track item.code) {
             <mat-option [value]="item.code">
               {{ item.name }}
             </mat-option>
@@ -39,23 +48,36 @@
     }
     <mat-form-field>
       <mat-label>Figure type</mat-label>
-      <mat-select [(value)]="typeSelected" (selectionChange)="onSelectionChangeType($event.value)">
+      <mat-select
+        [(value)]="typeSelected"
+        (selectionChange)="onSelectionChangeType($event.value)"
+      >
         @for (item of types; track item) {
           <mat-option [value]="item">{{ item }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
-    <div class=" flex flex-row  justify-between items-center gap-10">
-      <div class=" bg-secondary-trans text-quaternary rounded-2xl w-24 p-2 flex flex-col items-center">
+    <div class="flex flex-row justify-between items-center gap-10">
+      <div
+        class="bg-secondary-trans text-quaternary rounded-2xl w-auto p-2 flex flex-col items-center"
+      >
         <p>Mean</p>
-        <span class=" text-4xl">98</span>
+        <span class="text-4xl">{{ mean }}</span>
       </div>
-      <div class=" bg-secondary-trans text-quaternary rounded-2xl w-44 p-2 flex flex-col items-center ">
+      <div
+        class="bg-secondary-trans text-quaternary rounded-2xl w-auto p-2 flex flex-col items-center"
+      >
         <p>Standard Deviation</p>
-        <span class=" text-4xl">98</span>
+        <span class="text-4xl">{{ standardDeviation }}</span>
       </div>
     </div>
   </div>
-  <p-chart [type]="typeSelected" [data]="data" [options]="basicOptions" responsive="true" height="60vh" width="80vw" />
-
+  <p-chart
+    [type]="typeSelected"
+    [data]="data"
+    [options]="basicOptions"
+    responsive="true"
+    height="60vh"
+    width="80vw"
+  />
 </div>

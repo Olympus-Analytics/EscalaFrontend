@@ -1,9 +1,13 @@
+<div
+  class="map-container snap"
+  leaflet
+  [leafletOptions]="options"
+  [leafletLayers]="layers"
+  [leafletMinZoom]="13"
+></div>
 
-<div class="map-container snap"
-     leaflet
-     [leafletOptions]="options"
-     [leafletLayers]="layers"
-     [leafletMinZoom]="13"
-     >
-     
-</div>
+@if (layerManager["LST Raster"]() || layerManager["Ndvi Raster"]()) {
+  <div class="fixed z-50 right-5 bottom-8 w-96 h-24">
+    <img [src]="imageLegend" alt="" class="w-full h-full" />
+  </div>
+}

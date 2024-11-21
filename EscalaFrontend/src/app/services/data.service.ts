@@ -137,7 +137,12 @@ export class DataService {
       url += `&time=(${time[0]},${time[1]})`;
     }
     console.log('URL:', url);
-    return this.http.get<Graph>(url);
+    this.statesService.setLoadingState(true);
+    return this.http.get<Graph>(url).pipe(
+      finalize(() => {
+        this.statesService.setLoadingState(false);
+      }),
+    );
   }
 
   getRaster(
@@ -146,7 +151,7 @@ export class DataService {
   ): Observable<Raster> {
     this.statesService.setLoadingState(true);
     return this.http
-      .get<Raster>(`${this.baseUrl}/${raterType}?YY=${year}`)
+      .get<Raster>(`${this.baseUrl}/${raterType}/?YY=${year}`)
       .pipe(
         finalize(() => {
           this.statesService.setLoadingState(false);

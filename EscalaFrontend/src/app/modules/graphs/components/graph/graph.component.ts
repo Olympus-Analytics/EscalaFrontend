@@ -4,6 +4,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DataService } from '../../../../services/data.service';
 import { FormsManagersService } from '../../../../services/forms-managers.service';
+import { Datasets } from '@/models/graph.model';
 
 @Component({
   selector: 'app-graph',
@@ -23,7 +24,7 @@ export class GraphComponent implements OnInit {
     },
     {
       name: 'Traffic Collisions Area Count',
-      value: '/traffic_collisions_area_count/',
+      value: '/traffic_collisions_ts_mean/',
     },
     {
       name: 'Tree Plot Count',
@@ -33,13 +34,25 @@ export class GraphComponent implements OnInit {
       name: 'Tree Plot Area Count',
       value: '/tree_plot_area_count/',
     },
+    { name: 'NDVI', value: '/ndvi_means/' },
+    {
+      name: 'LST',
+      value: '/landsurface_temperature_means/',
+    },
   ];
 
+  endPointMean = {
+    landsurface_temperature_means: '/landsurface_temperature_mun_mean/',
+    ndvi_means: '/ndvi_mun_mean/',
+  };
+
   generalGraphTypes = [
+    { name: 'Municipality', code: 'municipality' },
     {
       name: 'Locality',
       code: 'locality',
     },
+
     {
       name: 'Neighborhood',
       code: 'neighborhood',
@@ -85,7 +98,7 @@ export class GraphComponent implements OnInit {
       code: 'neighborhood',
     },
   ];
-
+  meanEndpoint = this.endPointMean.landsurface_temperature_means;
   graphsTypes = this.generalGraphTypes;
   selectedEndpoint = this.endpoints[0].value;
   selectedGraphType = this.generalGraphTypes[0].code;
@@ -96,6 +109,7 @@ export class GraphComponent implements OnInit {
   data: any;
   basicOptions: any;
   mean: number = 0;
+  standardDeviation: number = 0;
   onEndpointChange(selectedValue: string) {
     this.selectedEndpoint = selectedValue;
     if (this.selectedEndpoint.includes('tree')) {
@@ -113,6 +127,11 @@ export class GraphComponent implements OnInit {
     } else {
       this.graphsTypes = this.generalGraphTypes;
       this.selectedGraphType = this.generalGraphTypes[0].code;
+    }
+    if (this.selectedEndpoint === '/landsurface_temperature_means/') {
+      this.meanEndpoint = this.endPointMean.landsurface_temperature_means;
+    } else if (this.selectedEndpoint === '/ndvi_means/') {
+      this.meanEndpoint = this.endPointMean.ndvi_means;
     }
 
     this.updateGraph();
@@ -137,6 +156,17 @@ export class GraphComponent implements OnInit {
     const dates: [number, number] | undefined = rangeDates?.map((date) =>
       date.getFullYear(),
     ) as [number, number] | undefined;
+    this.dataService
+      .getGraphDataG(
+        this.meanEndpoint,
+        this.selectedGraphType,
+        this.selectedTimeGraphType,
+        dates,
+      )
+      .subscribe((data) => {
+        this.mean = (data.datasets as Datasets).data[0];
+        this.standardDeviation = (data.datasets as Datasets).data[1];
+      });
 
     if (!this.isTree) {
       this.dataService

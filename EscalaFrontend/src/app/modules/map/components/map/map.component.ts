@@ -14,7 +14,6 @@ import {
   latLngBounds,
   LatLngTuple,
   circleMarker,
-  CircleMarker,
   Canvas,
 } from 'leaflet';
 import { getCoordinatesFromAuxXml } from '../../../../utils/GetCoordinateFromXML.utils';
@@ -42,7 +41,7 @@ export class MapComponent implements OnInit {
   pointLayers: Layer[] = [];
   layers: Layer[] = [];
   stateManager = inject(StatesService);
-
+  imageLegend: string = '';
   constructor() {
     effect(() => {
       if (this.layerManager['Ndvi Raster']()) {
@@ -111,6 +110,7 @@ export class MapComponent implements OnInit {
     const year = time?.getFullYear() || 2000;
 
     this.dataService.getRaster(year, rasterType).subscribe((raster: Raster) => {
+      this.imageLegend = raster.RASTER_LEGEND;
       this.dataService.GetImage(raster.RASTER_URL).subscribe((image: Blob) => {
         const url = URL.createObjectURL(image);
         const img = new Image();
@@ -169,7 +169,7 @@ export class MapComponent implements OnInit {
             weight: 1,
             opacity: 1,
             fillOpacity: 0.8,
-            renderer: canvasRenderer, // Usar el renderizador Canvas
+            renderer: canvasRenderer,
           },
         );
         this.pointLayers.push(pointMarker);
