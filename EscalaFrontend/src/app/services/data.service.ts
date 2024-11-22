@@ -123,6 +123,27 @@ export class DataService {
     );
   }
 
+  getGraphMean(
+    endpoint: string,
+    spatial: string,
+    temporal: string,
+    time: [number, number] | null | undefined = null,
+  ): Observable<Graph> {
+    let filter = '';
+    filter = `${spatial?.toLowerCase()}_${temporal}`;
+    let url = `${this.baseUrl}${endpoint}?filter=${filter}`;
+
+    if (time) {
+      url += `&time=(${time[0]},${time[1]})`;
+    }
+    console.log('URL:', url);
+    this.statesService.setLoadingState(true);
+    return this.http.get<Graph>(url).pipe(
+      finalize(() => {
+        this.statesService.setLoadingState(false);
+      }),
+    );
+  }
   getGraphDataG(
     endpoint: string,
     spatial: string,

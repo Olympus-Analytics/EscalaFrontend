@@ -53,7 +53,9 @@
         (selectionChange)="onSelectionChangeType($event.value)"
       >
         @for (item of types; track item) {
-          <mat-option [value]="item">{{ item }}</mat-option>
+          <mat-option [value]="item">{{
+            item.charAt(0).toUpperCase() + item.slice(1)
+          }}</mat-option>
         }
       </mat-select>
     </mat-form-field>

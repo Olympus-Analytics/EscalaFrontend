@@ -1,29 +1,41 @@
-<section class=" bg-black w-full h-[100vh] overflow-hidden relative snap flex">
-
-    <div class="absolute top-0 left-0 w-full h-[100%] animate-blurred-fade-in z-0">
-        <p-galleria [value]="images" [numVisible]="10" style="height: 100%; width: 100%"
-            [circular]="true" [showItemNavigators]="true" class=" text-quaternary"
-            [autoPlay]="true" >
-
-            
-            <ng-template pTemplate="item" let-item>
-                <div class=" h-[100vh]">
-                    <img [src]="item" class="w-[106vw] h-[102vh] object-cover" />
-                </div>
-            </ng-template>
-
-
-            
-
-        </p-galleria>
-    </div>
-
-  
-    <div class="w-full h-full flex flex-col justify-center items-center gap-24 relative z-10 pointer-events-none">
-        <div class="hero-container text-center bg-opacity-50 p-8 rounded w-full">
-            <h1 class="text-6xl text-primary font-bold">Welcome to the Dashboard</h1>
-            <p class="text-2xl text-secondary">This is a dashboard that shows the data of the different endpoints</p>
-            <a routerLink="/map" class="text-secondary pointer-events-auto">Translate</a>
+<section class="bg-black w-full h-[100vh] overflow-hidden relative snap flex">
+  <div
+    class="absolute top-0 left-0 w-full h-[100%] animate-blurred-fade-in z-0"
+  >
+    <p-galleria
+      [value]="images"
+      [numVisible]="10"
+      style="height: 100%; width: 100%"
+      [circular]="true"
+      [showItemNavigators]="true"
+      class="text-quaternary"
+      [autoPlay]="true"
+    >
+      <ng-template pTemplate="item" let-item>
+        <div class="h-[100vh]">
+          <img [src]="item" class="w-[106vw] h-[102vh] object-cover" />
         </div>
+      </ng-template>
+    </p-galleria>
+  </div>
+  <div
+    class="bg-black opacity-80 w-[100vw] h-[100vh] fixed pointer-events-none"
+  ></div>
+  <div
+    class="w-full h-full flex flex-col justify-center items-center gap-24 relative z-10 pointer-events-none"
+  >
+    <div
+      class="hero-container text-center flex flex-col items-center bg-opacity-50 p-8 rounded w-full"
+    >
+      <h1 class="text-6xl text-quaternary font-bold">Welcome to</h1>
+
+      <a routerLink="map"
+        ><img
+          src="/Escala.png"
+          alt="Logo de escala"
+          class="pointer-events-auto"
+        />
+      </a>
     </div>
+  </div>
 </section>

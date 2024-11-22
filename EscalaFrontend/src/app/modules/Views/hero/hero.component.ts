@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [NgOptimizedImage, RouterLink, GalleriaModule, RadioButtonModule, FormsModule],
+  imports: [ RouterLink, GalleriaModule, RadioButtonModule, FormsModule],
   templateUrl: './hero.component.html',
   styleUrls: ['./hero.component.css'] // Corregido: 'styleUrls' debe ser un array
 })

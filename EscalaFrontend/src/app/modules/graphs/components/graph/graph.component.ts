@@ -27,11 +27,11 @@ export class GraphComponent implements OnInit {
       value: '/traffic_collisions_ts_mean/',
     },
     {
-      name: 'Tree Plot Count',
+      name: 'Tree Count',
       value: '/tree_plot_count/',
     },
     {
-      name: 'Tree Plot Area Count',
+      name: 'Tree Count',
       value: '/tree_plot_area_count/',
     },
     { name: 'NDVI', value: '/ndvi_means/' },
@@ -42,6 +42,8 @@ export class GraphComponent implements OnInit {
   ];
 
   endPointMean = {
+    traffic_collisions_ts_mean: '/traffic_collisions_mun_mean/',
+    tree_plot_area_count: '/tree_plot_mun_mean/',
     landsurface_temperature_means: '/landsurface_temperature_mun_mean/',
     ndvi_means: '/ndvi_mun_mean/',
   };
@@ -98,7 +100,7 @@ export class GraphComponent implements OnInit {
       code: 'neighborhood',
     },
   ];
-  meanEndpoint = this.endPointMean.landsurface_temperature_means;
+  meanEndpoint = this.endPointMean.traffic_collisions_ts_mean;
   graphsTypes = this.generalGraphTypes;
   selectedEndpoint = this.endpoints[0].value;
   selectedGraphType = this.generalGraphTypes[0].code;
@@ -132,6 +134,10 @@ export class GraphComponent implements OnInit {
       this.meanEndpoint = this.endPointMean.landsurface_temperature_means;
     } else if (this.selectedEndpoint === '/ndvi_means/') {
       this.meanEndpoint = this.endPointMean.ndvi_means;
+    } else if (this.selectedEndpoint === '/tree_plot_area_count/') {
+      this.meanEndpoint = this.endPointMean.tree_plot_area_count;
+    } else if (this.selectedEndpoint === '/traffic_collisions_ts_mean/') {
+      this.meanEndpoint = this.endPointMean.traffic_collisions_ts_mean;
     }
 
     this.updateGraph();
@@ -157,7 +163,7 @@ export class GraphComponent implements OnInit {
       date.getFullYear(),
     ) as [number, number] | undefined;
     this.dataService
-      .getGraphDataG(
+      .getGraphMean(
         this.meanEndpoint,
         this.selectedGraphType,
         this.selectedTimeGraphType,
