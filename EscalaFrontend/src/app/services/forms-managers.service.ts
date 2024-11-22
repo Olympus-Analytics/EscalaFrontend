@@ -16,6 +16,7 @@ export class FormsManagersService {
     { name: 'Collision Points', signal: signal(false) },
     { name: 'Ndvi Raster', signal: signal(false) },
     { name: 'LST Raster', signal: signal(false) },
+    { name: 'Urban', signal: signal(false) },
   ];
   constructor() {}
 }

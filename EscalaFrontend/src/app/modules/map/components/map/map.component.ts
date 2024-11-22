@@ -3,6 +3,7 @@ import {
   DataService,
   PointsEndpoint,
   RasterType,
+  ShapeType,
 } from '../../../../services/data.service';
 import { Raster } from '../../../../models/raster.model';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
@@ -55,11 +56,31 @@ export class MapComponent implements OnInit {
       }
     });
     effect(() => {
+      if (this.layerManager['Urban']()) {
+        this.dataService
+          .getShapeFile(ShapeType.locality_bar)
+          .subscribe((shapeFile) => {
+            console.log('ShapeFile:', shapeFile);
+          });
+      }
+    });
+    effect(() => {
       if (this.layerManager['Tree Points']()) {
         this.dataService
           .getPoint(PointsEndpoint.TREE_PLOT)
           .subscribe((points: Feature[]) => {
             this.addPointsToMap(points, 'tree');
+          });
+      } else {
+        this.removePointLayers();
+      }
+    });
+    effect(() => {
+      if (this.layerManager['Collision Points']()) {
+        this.dataService
+          .getPoint(PointsEndpoint.TRAFFIC_COLLISIONS)
+          .subscribe((points: Feature[]) => {
+            this.addPointsToMap(points, 'collision');
           });
       } else {
         this.removePointLayers();
