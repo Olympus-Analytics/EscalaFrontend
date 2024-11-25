@@ -72,6 +72,14 @@
         <p>Standard Deviation</p>
         <span class="text-4xl">{{ standardDeviation }}</span>
       </div>
+      @if (isNeighborhood) {
+        <p
+          pTooltip="Top ten neighborhoods with the highest number of collisions"
+          class="bg-secondary-trans rounded-2xl text-3xl text-quaternary shadow-2xl w-8 h-8 text-center flex justify-center items-center"
+        >
+          ?
+        </p>
+      }
     </div>
   </div>
   <p-chart

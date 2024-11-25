@@ -5,11 +5,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { DataService } from '../../../../services/data.service';
 import { FormsManagersService } from '../../../../services/forms-managers.service';
 import { Datasets } from '@/models/graph.model';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-graph',
   standalone: true,
-  imports: [ChartModule, MatFormFieldModule, MatSelectModule],
+  imports: [ChartModule, MatFormFieldModule, MatSelectModule, TooltipModule],
   templateUrl: './graph.component.html',
   styleUrls: ['./graph.component.css'],
 })
@@ -90,6 +92,13 @@ export class GraphComponent implements OnInit {
     },
   ];
 
+  TimeGraphTypesWithoutMonth = [
+    {
+      name: 'Year',
+      code: 'YY',
+    },
+  ];
+
   areaGraphTypes = [
     {
       name: 'Locality',
@@ -112,6 +121,7 @@ export class GraphComponent implements OnInit {
   basicOptions: any;
   mean: number = 0;
   standardDeviation: number = 0;
+  isNeighborhood = false;
   onEndpointChange(selectedValue: string) {
     this.selectedEndpoint = selectedValue;
     if (this.selectedEndpoint.includes('tree')) {
@@ -130,14 +140,25 @@ export class GraphComponent implements OnInit {
       this.graphsTypes = this.generalGraphTypes;
       this.selectedGraphType = this.generalGraphTypes[0].code;
     }
-    if (this.selectedEndpoint === '/landsurface_temperature_means/') {
+
+    if (
+      this.selectedEndpoint === '/landsurface_temperature_means/' ||
+      this.selectedEndpoint === '/ndvi_means/'
+    ) {
       this.meanEndpoint = this.endPointMean.landsurface_temperature_means;
-    } else if (this.selectedEndpoint === '/ndvi_means/') {
-      this.meanEndpoint = this.endPointMean.ndvi_means;
-    } else if (this.selectedEndpoint === '/tree_plot_area_count/') {
-      this.meanEndpoint = this.endPointMean.tree_plot_area_count;
-    } else if (this.selectedEndpoint === '/traffic_collisions_ts_mean/') {
+      this.TimeGraphTypes = this.TimeGraphTypesWithoutMonth;
+    } else {
       this.meanEndpoint = this.endPointMean.traffic_collisions_ts_mean;
+      this.TimeGraphTypes = [
+        {
+          name: 'Year',
+          code: 'YY',
+        },
+        {
+          name: 'Month',
+          code: 'MM',
+        },
+      ];
     }
 
     this.updateGraph();
@@ -145,6 +166,11 @@ export class GraphComponent implements OnInit {
 
   onSelectionChange(selectedValue: string) {
     this.selectedGraphType = selectedValue;
+    if (this.selectedGraphType.includes('neighborhood')) {
+      this.isNeighborhood = true;
+    } else {
+      this.isNeighborhood = false;
+    }
     this.updateGraph();
   }
   onSelectionTimeChange(selectedValue: string) {
