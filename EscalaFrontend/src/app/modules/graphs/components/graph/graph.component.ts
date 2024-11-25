@@ -217,7 +217,7 @@ export class GraphComponent implements OnInit {
           if (!this.types.includes(this.typeSelected)) {
             this.typeSelected = this.types[0];
           }
-          this.configureChartOptions(); // Llama a la configuración de los ejes
+          this.configureChartOptions();
         });
     } else {
       this.dataService
@@ -232,7 +232,7 @@ export class GraphComponent implements OnInit {
           if (!this.types.includes(this.typeSelected)) {
             this.typeSelected = this.types[0];
           }
-          this.configureChartOptions(); // Llama a la configuración de los ejes
+          this.configureChartOptions();
         });
     }
   }

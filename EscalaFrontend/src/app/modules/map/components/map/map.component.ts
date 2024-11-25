@@ -16,11 +16,14 @@ import {
   LatLngTuple,
   circleMarker,
   Canvas,
+  geoJSON,
 } from 'leaflet';
 import { getCoordinatesFromAuxXml } from '../../../../utils/GetCoordinateFromXML.utils';
+import { GeoJsonObject } from 'geojson';
 import { FormsManagersService } from '../../../../services/forms-managers.service';
 import { StatesService } from '../../../../services/states.service';
 import { Feature } from '@/models/points.model';
+import { ShapeFile } from '@/models/shapefile.model';
 
 @Component({
   selector: 'app-map',
@@ -41,8 +44,10 @@ export class MapComponent implements OnInit {
   rasterLayers: { [key: string]: Layer } = {};
   pointLayers: Layer[] = [];
   layers: Layer[] = [];
+  geoLayer: Layer[] = [];
   stateManager = inject(StatesService);
   imageLegend: string = '';
+
   constructor() {
     effect(() => {
       if (this.layerManager['Ndvi Raster']()) {
@@ -55,15 +60,37 @@ export class MapComponent implements OnInit {
         this.removeRasterLayer('Ndvi Raster');
       }
     });
+
     effect(() => {
       if (this.layerManager['Urban']()) {
         this.dataService
           .getShapeFile(ShapeType.locality_bar)
-          .subscribe((shapeFile) => {
-            console.log('ShapeFile:', shapeFile);
+          .subscribe((shapeFile: ShapeFile) => {
+            console.log('ShapeFile Data:', shapeFile);
+
+            // Convertir en una capa geoJSON
+            const geoJsonLayer = geoJSON(shapeFile as GeoJsonObject, {
+              style: {
+                color: 'blue',
+                weight: 2,
+                opacity: 0.8,
+              },
+              onEachFeature: (feature, layer) => {
+                if (feature.properties && feature.properties.name) {
+                  layer.bindPopup(`Name: ${feature.properties.name}`);
+                }
+              },
+            });
+
+            this.geoLayer.push(geoJsonLayer);
+            this.updateLayers();
+            console.log('Layers:', this.layers);
           });
+      } else {
+        this.removeGeoLayer();
       }
     });
+
     effect(() => {
       if (this.layerManager['Tree Points']()) {
         this.dataService
@@ -75,17 +102,7 @@ export class MapComponent implements OnInit {
         this.removePointLayers();
       }
     });
-    effect(() => {
-      if (this.layerManager['Collision Points']()) {
-        this.dataService
-          .getPoint(PointsEndpoint.TRAFFIC_COLLISIONS)
-          .subscribe((points: Feature[]) => {
-            this.addPointsToMap(points, 'collision');
-          });
-      } else {
-        this.removePointLayers();
-      }
-    });
+
     effect(() => {
       if (this.layerManager['Collision Points']()) {
         this.dataService
@@ -204,11 +221,17 @@ export class MapComponent implements OnInit {
     this.updateLayers();
   }
 
+  removeGeoLayer(): void {
+    this.geoLayer = [];
+    this.updateLayers();
+  }
+
   updateLayers(): void {
     this.layers = [
       ...this.options.layers,
       ...Object.values(this.rasterLayers),
       ...this.pointLayers,
+      ...this.geoLayer,
     ];
   }
 

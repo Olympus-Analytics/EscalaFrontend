@@ -17,7 +17,7 @@ export enum PointsEndpoint {
   TREE_PLOT = '/tree_plot_point/',
 }
 export enum ShapeType {
-  locality_bar = 'locality_bar',
+  locality_bar = '/locality_bar/',
 }
 @Injectable({
   providedIn: 'root',
@@ -93,7 +93,7 @@ export class DataService {
     return this.graphFilters[endpointKey] || [];
   }
   getShapeFile(shapeType: ShapeType): Observable<ShapeFile> {
-    return this.http.get<ShapeFile>(`${this.baseUrl}${shapeType}/`);
+    return this.http.get<ShapeFile>(`${this.baseUrl}${shapeType}`);
   }
   getGraphData(
     endpoint: string,

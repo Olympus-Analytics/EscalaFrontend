@@ -1,18 +1,8 @@
-export interface ShapeFile {
-  type: string;
+import { GeoJsonObject, FeatureCollection, Feature, Geometry } from 'geojson';
+
+export interface ShapeFile extends FeatureCollection {
+  type: 'FeatureCollection';
   features: Feature[];
-}
-
-export interface Feature {
-  id: string;
-  type: string;
-  geometry: Geometry;
-  properties: Properties;
-}
-
-export interface Geometry {
-  type: string;
-  coordinates: Array<Array<Array<number[]>>>;
 }
 
 export interface Properties {
