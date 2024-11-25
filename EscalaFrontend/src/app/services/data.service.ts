@@ -7,6 +7,7 @@ import { Raster } from '../models/raster.model';
 import { StatesService } from './states.service';
 import { Feature, Points } from '../models/points.model';
 import { PointsAdapater } from '../adapters/points.adapter';
+import { ShapeFile } from '@/models/shapefile.model';
 export enum RasterType {
   NDVI = 'ndvi',
   TEMPERATURE = 'landsurface_temperature',
@@ -14,6 +15,9 @@ export enum RasterType {
 export enum PointsEndpoint {
   TRAFFIC_COLLISIONS = '/traffic_collisions_point/',
   TREE_PLOT = '/tree_plot_point/',
+}
+export enum ShapeType {
+  locality_bar = 'locality_bar',
 }
 @Injectable({
   providedIn: 'root',
@@ -88,7 +92,9 @@ export class DataService {
     const endpointKey = endpoint.replace(/^\/|\/$/g, '');
     return this.graphFilters[endpointKey] || [];
   }
-
+  getShapeFile(shapeType: ShapeType): Observable<ShapeFile> {
+    return this.http.get<ShapeFile>(`${this.baseUrl}${shapeType}/`);
+  }
   getGraphData(
     endpoint: string,
     filter: string,

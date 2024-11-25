@@ -33,7 +33,7 @@ export class GraphComponent implements OnInit {
       value: '/tree_plot_count/',
     },
     {
-      name: 'Tree Count',
+      name: 'Tree Area Count',
       value: '/tree_plot_area_count/',
     },
     { name: 'NDVI', value: '/ndvi_means/' },
