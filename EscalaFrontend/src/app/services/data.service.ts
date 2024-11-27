@@ -8,6 +8,7 @@ import { StatesService } from './states.service';
 import { Feature, Points } from '../models/points.model';
 import { PointsAdapater } from '../adapters/points.adapter';
 import { ShapeFile } from '@/models/shapefile.model';
+import { Router } from '@angular/router';
 export enum RasterType {
   NDVI = 'ndvi',
   TEMPERATURE = 'landsurface_temperature',
@@ -18,6 +19,13 @@ export enum PointsEndpoint {
 }
 export enum ShapeType {
   locality_bar = '/locality_bar/',
+  NEIGHBORHOOD = '/neightborhood/',
+  MUNICIPALITY = '/municipality/',
+}
+
+export enum DownloadType {
+  NDVI = '/static/NDVI_bar/Download/NDVIbar_1__mean.zip',
+  LST = '/static/LST_bar/Download/LSTbar_2000__mean.zip',
 }
 @Injectable({
   providedIn: 'root',
@@ -220,5 +228,9 @@ export class DataService {
           this.statesService.setLoadingState(false);
         }),
       );
+  }
+
+  download(route: DownloadType) {
+    return `${environment.apiURL}${route}`;
   }
 }

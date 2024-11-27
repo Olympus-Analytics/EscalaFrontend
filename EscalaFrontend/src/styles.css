@@ -3,7 +3,7 @@
 @import "primeng/resources/primeng.css";
 /* styles.css */
 @import "leaflet/dist/leaflet.css";
-
+@import "primeicons/primeicons.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

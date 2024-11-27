@@ -3,7 +3,7 @@
 
   <aside class="aside" [ngClass]="opened ? 'opened' : ''">
     <ul>
-      <h2 class=" text-quaternary text-4xl font-bold">Map</h2>
+      <h2 class="text-quaternary text-4xl font-bold">Map</h2>
       <li class="card flex-auto">
         <label for="buttondisplay" class="font-bold block mb-2"> Year </label>
         <p-calendar
@@ -13,14 +13,13 @@
           showIcon="true"
           view="year"
           class="text-black"
-          
         />
       </li>
       <li class="card flex-auto">
-        <app-layer-manager/>
+        <app-layer-manager />
       </li>
       <hr class="border-b-2 border-quaternary rounded-3xl" />
-      <h2 class=" text-quaternary text-4xl font-bold mb-2">Graph</h2>
+      <h2 class="text-quaternary text-4xl font-bold mb-2">Graph</h2>
       <li class="card flex-auto">
         <label for="buttondisplay" class="font-bold block mb-2"> Years </label>
         <p-calendar
@@ -33,10 +32,14 @@
           class="text-black"
           [minDate]="minDate"
           [maxDate]="maxDate"
-          
         />
       </li>
-      
+
+      <li>
+        <button (click)="downloadAction()" class="">
+          <i class="pi pi-download" style="font-size: 2.5rem"></i>
+        </button>
+      </li>
     </ul>
   </aside>
 </div>

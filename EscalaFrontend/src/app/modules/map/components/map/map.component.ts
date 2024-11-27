@@ -90,6 +90,64 @@ export class MapComponent implements OnInit {
         this.removeGeoLayer();
       }
     });
+    effect(() => {
+      if (this.layerManager['Neighborhood']()) {
+        this.dataService
+          .getShapeFile(ShapeType.NEIGHBORHOOD)
+          .subscribe((shapeFile: ShapeFile) => {
+            console.log('ShapeFile Data:', shapeFile);
+
+            // Convertir en una capa geoJSON
+            const geoJsonLayer = geoJSON(shapeFile as GeoJsonObject, {
+              style: {
+                color: 'red',
+                weight: 2,
+                opacity: 0.8,
+              },
+              onEachFeature: (feature, layer) => {
+                if (feature.properties && feature.properties.name) {
+                  layer.bindPopup(`Name: ${feature.properties.name}`);
+                }
+              },
+            });
+
+            this.geoLayer.push(geoJsonLayer);
+            this.updateLayers();
+            console.log('Layers:', this.layers);
+          });
+      } else {
+        this.removeGeoLayer();
+      }
+    });
+    effect(() => {
+      if (this.layerManager['Municipality']()) {
+        this.dataService
+          .getShapeFile(ShapeType.MUNICIPALITY)
+          .subscribe((shapeFile: ShapeFile) => {
+            console.log('ShapeFile Data:', shapeFile);
+
+            // Convertir en una capa geoJSON
+            const geoJsonLayer = geoJSON(shapeFile as GeoJsonObject, {
+              style: {
+                color: 'green',
+                weight: 2,
+                opacity: 0.8,
+              },
+              onEachFeature: (feature, layer) => {
+                if (feature.properties && feature.properties.name) {
+                  layer.bindPopup(`Name: ${feature.properties.name}`);
+                }
+              },
+            });
+
+            this.geoLayer.push(geoJsonLayer);
+            this.updateLayers();
+            console.log('Layers:', this.layers);
+          });
+      } else {
+        this.removeGeoLayer();
+      }
+    });
 
     effect(() => {
       if (this.layerManager['Tree Points']()) {
