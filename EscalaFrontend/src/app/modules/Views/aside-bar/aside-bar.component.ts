@@ -26,8 +26,7 @@ export class AsideBarComponent {
   opened = false;
   formControlService = inject(FormsManagersService);
   dataService = inject(DataService);
-  router = inject(Router);
-  route: string = this.dataService.download(DownloadType.NDVI);
+
   years: { name: string; code: string }[] = [
     { name: '2016', code: '2016' },
     { name: '2017', code: '2017' },
@@ -47,12 +46,6 @@ export class AsideBarComponent {
     this.opened = value;
   }
   downloadAction() {
-    if (this.formControlService.layerManager['Ndvi Raster']) {
-      this.route = this.dataService.download(DownloadType.NDVI);
-    }
-    if (this.formControlService.layerManager['LST Raster']) {
-      this.route = this.dataService.download(DownloadType.LST);
-    }
-    window.open(this.route, '_blank');
+    window.open(this.dataService.download());
   }
 }

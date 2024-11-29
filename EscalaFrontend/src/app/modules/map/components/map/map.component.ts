@@ -62,7 +62,7 @@ export class MapComponent implements OnInit {
     });
 
     effect(() => {
-      if (this.layerManager['Urban']()) {
+      if (this.layerManager['Locality']()) {
         this.dataService
           .getShapeFile(ShapeType.locality_bar)
           .subscribe((shapeFile: ShapeFile) => {

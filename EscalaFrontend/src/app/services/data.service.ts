@@ -9,6 +9,7 @@ import { Feature, Points } from '../models/points.model';
 import { PointsAdapater } from '../adapters/points.adapter';
 import { ShapeFile } from '@/models/shapefile.model';
 import { Router } from '@angular/router';
+import { FormsManagersService } from './forms-managers.service';
 export enum RasterType {
   NDVI = 'ndvi',
   TEMPERATURE = 'landsurface_temperature',
@@ -35,7 +36,7 @@ export class DataService {
 
   http = inject(HttpClient);
   statesService = inject(StatesService);
-
+  formManager = inject(FormsManagersService);
   private graphFilters: { [key: string]: string[] } = {
     traffic_collisions: [
       'YY',
@@ -230,7 +231,20 @@ export class DataService {
       );
   }
 
-  download(route: DownloadType) {
-    return `${environment.apiURL}${route}`;
+  download() {
+    const treePlot = this.formManager.layerManager['Tree Points']();
+    const trafficCollisions =
+      this.formManager.layerManager['Collision Points']();
+    const dateRaster = this.formManager.dateRaster();
+
+    if (!dateRaster) {
+      console.error('No date selected for raster');
+      return '';
+    }
+
+    const year = dateRaster.getFullYear();
+    console.log('Selected year:', year);
+
+    return `${environment.apiURL}/api/download/?ndvi_year=${year}&lst_year=${year}&treeplot=${treePlot}&traffic_collisions=${trafficCollisions}`;
   }
 }

@@ -17,9 +17,8 @@ export class FormsManagersService {
     { name: 'Ndvi Raster', signal: signal(false) },
     { name: 'LST Raster', signal: signal(false) },
     { name: 'Municipality', signal: signal(false) },
-    { name: 'Urban', signal: signal(false) },
+    { name: 'Locality', signal: signal(false) },
     { name: 'Neighborhood', signal: signal(false) },
-
   ];
   layerManager = Object.fromEntries(
     this.layersActivated.map((layer) => [layer.name, layer.signal]),
