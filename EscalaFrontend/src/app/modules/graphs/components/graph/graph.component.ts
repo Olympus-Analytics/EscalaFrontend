@@ -38,7 +38,7 @@ export class GraphComponent implements OnInit {
     },
     { name: 'NDVI', value: '/ndvi_means/' },
     {
-      name: 'LST',
+      name: 'LST (°C)',
       value: '/landsurface_temperature_means/',
     },
   ];
@@ -64,14 +64,6 @@ export class GraphComponent implements OnInit {
   ];
 
   generalGraphTreeTypes = [
-    {
-      name: 'Year',
-      code: 'YY',
-    },
-    {
-      name: 'Month',
-      code: 'MM',
-    },
     {
       name: 'Locality',
       code: 'locality',
@@ -128,6 +120,7 @@ export class GraphComponent implements OnInit {
       this.isTree = true;
       this.graphsTypes = this.generalGraphTreeTypes;
       this.selectedGraphType = this.generalGraphTreeTypes[0].code;
+      console.log(this.graphsTypes);
     } else {
       this.isTree = false;
       this.graphsTypes = this.generalGraphTypes;
@@ -220,6 +213,8 @@ export class GraphComponent implements OnInit {
           this.configureChartOptions();
         });
     } else {
+      this.isTree = true;
+
       this.dataService
         .getGraphData(this.selectedEndpoint, this.selectedGraphType, dates)
         .subscribe((data) => {
@@ -234,6 +229,7 @@ export class GraphComponent implements OnInit {
           }
           this.configureChartOptions();
         });
+      this.graphsTypes = this.generalGraphTreeTypes;
     }
   }
 
