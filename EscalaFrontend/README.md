@@ -1,27 +1,48 @@
 # EscalaFrontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.1.2.
+Este es el proyecto **EscalaFrontend**, una aplicación web desarrollada con Angular.
 
-## Development server
+## Requisitos previos
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Antes de comenzar, asegúrate de tener instalado lo siguiente:
 
-## Code scaffolding
+- [Node.js](https://nodejs.org/) (versión 14 o superior)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Tener ejecutada la Api
 
-## Build
+## Instalacion de angular cli
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+ejecutar comando:
+```
+npm install -g @angular/cli
+```
 
-## Running unit tests
+## Clonar el repositorio
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Para clonar el repositorio, abre una terminal y ejecuta el siguiente comando:
+```
+git clone https://github.com/Olympus-Analytics/EscalaFrontend.git
+```
+ ## Acede a la carpeta
+para moverte entre carpetas de consola debes usar el siguiente comando:
 
-## Running end-to-end tests
+```
+cd nombredelacarpeta
+```
+Entonces en este caso, para acceder a la carpeta se debe ejecutar el siguiente comando
+```
+cd EscalaFrontend
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Instalar dependencias
+ejecutar comandos:
+```
+cd escala-frontend
+npm install
+```
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Ejecutar la aplicación en local
+ejecutar comando:
+```
+ng serve
+```
