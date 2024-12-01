@@ -35,12 +35,7 @@ import { ShapeFile } from '@/models/shapefile.model';
 export class MapComponent implements OnInit {
   dataService = inject(DataService);
   formControlService = inject(FormsManagersService);
-  layerManager = Object.fromEntries(
-    this.formControlService.layersActivated.map((layer) => [
-      layer.name,
-      layer.signal,
-    ]),
-  );
+  layerManager = this.formControlService.layerManager;
   rasterLayers: { [key: string]: Layer } = {};
   pointLayers: Layer[] = [];
   layers: Layer[] = [];
@@ -50,14 +45,14 @@ export class MapComponent implements OnInit {
 
   constructor() {
     effect(() => {
-      if (this.layerManager['Ndvi Raster']()) {
+      if (this.layerManager['NDVI Raster']()) {
         this.updateRaster(
           this.formControlService.dateRaster(),
           RasterType.NDVI,
-          'Ndvi Raster',
+          'NDVI Raster',
         );
       } else {
-        this.removeRasterLayer('Ndvi Raster');
+        this.removeRasterLayer('NDVI Raster');
       }
     });
 
@@ -207,41 +202,38 @@ export class MapComponent implements OnInit {
 
     this.dataService.getRaster(year, rasterType).subscribe((raster: Raster) => {
       this.imageLegend = raster.RASTER_LEGEND;
-      this.dataService.GetImage(raster.RASTER_URL).subscribe((image: Blob) => {
-        const url = URL.createObjectURL(image);
-        const img = new Image();
 
-        img.src = url;
-        img.onload = () => {
-          console.log('Image loaded:', img.width, img.height);
+      const url = raster.RASTER_URL;
+      const img = new Image();
 
-          this.dataService
-            .GetXML(raster.RASTER_AUX)
-            .subscribe((xml: string) => {
-              getCoordinatesFromAuxXml(xml, img.width, img.height).then(
-                (coordinates) => {
-                  console.log('Coordinates:', coordinates);
+      img.src = url;
+      img.onload = () => {
+        console.log('Image loaded:', img.width, img.height);
 
-                  const topLeft: LatLngTuple = [
-                    coordinates.topLeft[0],
-                    coordinates.topLeft[1],
-                  ];
-                  const bottomRight: LatLngTuple = [
-                    coordinates.bottomRight[0],
-                    coordinates.bottomRight[1],
-                  ];
+        this.dataService.GetXML(raster.RASTER_AUX).subscribe((xml: string) => {
+          getCoordinatesFromAuxXml(xml, img.width, img.height).then(
+            (coordinates) => {
+              console.log('Coordinates:', coordinates);
 
-                  const bounds = latLngBounds(topLeft, bottomRight);
-                  const imageLayer = imageOverlay(url, bounds);
+              const topLeft: LatLngTuple = [
+                coordinates.topLeft[0],
+                coordinates.topLeft[1],
+              ];
+              const bottomRight: LatLngTuple = [
+                coordinates.bottomRight[0],
+                coordinates.bottomRight[1],
+              ];
 
-                  // Actualiza la capa del raster
-                  this.rasterLayers[layerKey] = imageLayer;
-                  this.updateLayers();
-                },
-              );
-            });
-        };
-      });
+              const bounds = latLngBounds(topLeft, bottomRight);
+              const imageLayer = imageOverlay(url, bounds);
+
+              // Actualiza la capa del raster
+              this.rasterLayers[layerKey] = imageLayer;
+              this.updateLayers();
+            },
+          );
+        });
+      };
     });
   }
 

@@ -1,4 +1,5 @@
 import { Injectable, Signal, signal } from '@angular/core';
+
 interface LayersActivated {
   name: string;
   signal: Signal<boolean>;
@@ -14,7 +15,7 @@ export class FormsManagersService {
   layersActivated: LayersActivated[] = [
     { name: 'Tree Points', signal: signal(false) },
     { name: 'Collision Points', signal: signal(false) },
-    { name: 'Ndvi Raster', signal: signal(false) },
+    { name: 'NDVI Raster', signal: signal(false) },
     { name: 'LST Raster', signal: signal(false) },
     { name: 'Municipality', signal: signal(false) },
     { name: 'Locality', signal: signal(false) },
