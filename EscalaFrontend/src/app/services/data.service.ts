@@ -233,18 +233,25 @@ export class DataService {
 
   download() {
     const treePlot = this.formManager.layerManager['Tree Points']();
+
     const trafficCollisions =
       this.formManager.layerManager['Collision Points']();
     const dateRaster = this.formManager.dateRaster();
+    let URL = `${environment.apiURL}/api/download/?treeplot=${treePlot}&traffic_collisions=${trafficCollisions}`;
 
     if (!dateRaster) {
       console.error('No date selected for raster');
       return '';
     }
-
+    if (this.formManager.layerManager['NDVI Raster']()) {
+      URL += `&ndvi_year=${dateRaster.getFullYear()}`;
+    }
+    if (this.formManager.layerManager['LST Raster']()) {
+      URL += `&lst_year=${dateRaster.getFullYear()}`;
+    }
     const year = dateRaster.getFullYear();
     console.log('Selected year:', year);
 
-    return `${environment.apiURL}/api/download/?ndvi_year=${year}&lst_year=${year}&treeplot=${treePlot}&traffic_collisions=${trafficCollisions}`;
+    return URL;
   }
 }
