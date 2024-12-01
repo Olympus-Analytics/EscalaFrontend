@@ -19,21 +19,6 @@
         <app-layer-manager />
       </li>
       <hr class="border-b-2 border-quaternary rounded-3xl" />
-      <h2 class="text-quaternary text-4xl font-bold mb-2">Graph</h2>
-      <li class="card flex-auto">
-        <label for="buttondisplay" class="font-bold block mb-2"> Years </label>
-        <p-calendar
-          [(ngModel)]="rangeDates"
-          selectionMode="range"
-          [readonlyInput]="true"
-          dateFormat="yy"
-          showIcon="true"
-          view="year"
-          class="text-black"
-          [minDate]="minDate"
-          [maxDate]="maxDate"
-        />
-      </li>
 
       <li>
         <button (click)="downloadAction()" class="">

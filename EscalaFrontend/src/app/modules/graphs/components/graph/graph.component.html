@@ -1,5 +1,19 @@
 <div class="w-full h-full flex flex-col py-3 gap-6 px-14">
   <div class="flex flex-row justify-start items-center gap-8">
+    <div class="card flex-auto items-center justify-center">
+      <label for="buttondisplay" class="font-bold block mb-2"> Years </label>
+      <p-calendar
+        [(ngModel)]="rangeDates"
+        selectionMode="range"
+        [readonlyInput]="true"
+        dateFormat="yy"
+        showIcon="true"
+        view="year"
+        class="text-black"
+        [minDate]="minDate"
+        [maxDate]="maxDate"
+      />
+    </div>
     <mat-form-field>
       <mat-label>Category</mat-label>
       <mat-select
