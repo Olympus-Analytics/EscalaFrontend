@@ -1,48 +1,58 @@
 # EscalaFrontend
 
-Este es el proyecto **EscalaFrontend**, una aplicación web desarrollada con Angular.
+ESCALA study (Climate Change, Built Environment and Health in Informal Settlements in Colombia) - Pilot project for data visualization (Universidad del Norte, Universidad de los Andes, Drexel University).
 
-## Requisitos previos
+## Prerequisites
 
-Antes de comenzar, asegúrate de tener instalado lo siguiente:
+Before starting, ensure that you have installed:
 
 - [Node.js](https://nodejs.org/) (versión 14 o superior)
 
-- Tener ejecutada la Api
+And you should have executed the api (Backend)
 
-## Instalacion de angular cli
+## Angular CLI installation
 
-ejecutar comando:
+Execute the command:
+
 ```
 npm install -g @angular/cli
 ```
 
-## Clonar el repositorio
+## Clone the repository
 
-Para clonar el repositorio, abre una terminal y ejecuta el siguiente comando:
+For cloning this repository, open a terminal and execute the next command:
+
 ```
 git clone https://github.com/Olympus-Analytics/EscalaFrontend.git
 ```
- ## Acede a la carpeta
-para moverte entre carpetas de consola debes usar el siguiente comando:
+
+## Accesing for folder
+
+For moving between folders in the console, you should use the next command:
 
 ```
-cd nombredelacarpeta
-```
-Entonces en este caso, para acceder a la carpeta se debe ejecutar el siguiente comando
-```
-cd EscalaFrontend
+cd nameoffolder
 ```
 
-## Instalar dependencias
-ejecutar comandos:
+So in this case, for accesing to the folder you should execute the next command
+
+```
+cd EscalaApi
+```
+
+## Install dependencies
+
+Execute commands:
+
 ```
 cd escala-frontend
 npm install
 ```
 
-## Ejecutar la aplicación en local
-ejecutar comando:
+## Execute the application in local
+
+Execute command:
+
 ```
 ng serve
 ```
